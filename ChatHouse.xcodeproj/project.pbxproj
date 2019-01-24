@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		68DAEAC74720CDE49D794A4D /* Pods_ChatHouse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EC3E63B5DDBC54F3EBE1ED7 /* Pods_ChatHouse.framework */; };
+		C545D84021F7E12E00F6722C /* CustomUIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C545D83F21F7E12E00F6722C /* CustomUIButton.swift */; };
+		C545D84221F7E1AC00F6722C /* CustomColorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C545D84121F7E1AC00F6722C /* CustomColorHelper.swift */; };
 		C577525621EF5E9A0043974A /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C577525521EF5E9A0043974A /* LoginController.swift */; };
 		C577527921F0DE220043974A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C577527821F0DE210043974A /* GoogleService-Info.plist */; };
 		C577527B21F1322E0043974A /* LoginControllerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C577527A21F1322E0043974A /* LoginControllerHelper.swift */; };
@@ -21,6 +23,8 @@
 /* Begin PBXFileReference section */
 		2EC3E63B5DDBC54F3EBE1ED7 /* Pods_ChatHouse.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChatHouse.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43A78535DBF9745EFA33877F /* Pods-ChatHouse.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatHouse.release.xcconfig"; path = "Pods/Target Support Files/Pods-ChatHouse/Pods-ChatHouse.release.xcconfig"; sourceTree = "<group>"; };
+		C545D83F21F7E12E00F6722C /* CustomUIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomUIButton.swift; sourceTree = "<group>"; };
+		C545D84121F7E1AC00F6722C /* CustomColorHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColorHelper.swift; sourceTree = "<group>"; };
 		C577525521EF5E9A0043974A /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		C577527821F0DE210043974A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C577527A21F1322E0043974A /* LoginControllerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginControllerHelper.swift; sourceTree = "<group>"; };
@@ -54,6 +58,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		C545D83E21F7E11300F6722C /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				C545D83F21F7E12E00F6722C /* CustomUIButton.swift */,
+				C545D84121F7E1AC00F6722C /* CustomColorHelper.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		C577525421EF5E630043974A /* Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -85,6 +98,7 @@
 		C5C2015021EE979200B814DF /* ChatHouse */ = {
 			isa = PBXGroup;
 			children = (
+				C545D83E21F7E11300F6722C /* Helpers */,
 				C577525421EF5E630043974A /* Controller */,
 				C5C2015121EE979200B814DF /* AppDelegate.swift */,
 				C5C2015521EE979200B814DF /* Main.storyboard */,
@@ -224,8 +238,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C545D84221F7E1AC00F6722C /* CustomColorHelper.swift in Sources */,
 				C5C2015421EE979200B814DF /* ViewController.swift in Sources */,
 				C577525621EF5E9A0043974A /* LoginController.swift in Sources */,
+				C545D84021F7E12E00F6722C /* CustomUIButton.swift in Sources */,
 				C5C2015221EE979200B814DF /* AppDelegate.swift in Sources */,
 				C577527B21F1322E0043974A /* LoginControllerHelper.swift in Sources */,
 			);

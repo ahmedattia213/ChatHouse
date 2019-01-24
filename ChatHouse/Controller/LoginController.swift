@@ -11,8 +11,9 @@ import FirebaseAuth
 import Firebase
 class LoginController: UIViewController {
     
-    var stackView : UIStackView!
-    
+    var inputsContainerViewHeightAnchor : NSLayoutConstraint?
+    var nameTextFieldHeightAnchor : NSLayoutConstraint?
+    var emailTextFieldHeightAnchor : NSLayoutConstraint?
     let inputsContainerView : UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -21,20 +22,20 @@ class LoginController: UIViewController {
         view.layer.masksToBounds = true
         return view
     }()
-   
+    
     let loginRegisterButton : UIButton = {
-       let button = UIButton(type: .system)
+        let button = UIButton(type: .system)
         button.backgroundColor = UIColor(hexRGB: 0x4376CF)
         button.setTitle("Register", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleRegisterLoginButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         return button
     }()
     
     let nameTextField : UITextField = {
-    let textfield = UITextField()
+        let textfield = UITextField()
         textfield.placeholder = "Enter your name"
         textfield.translatesAutoresizingMaskIntoConstraints = false
         return textfield
@@ -69,78 +70,45 @@ class LoginController: UIViewController {
     }()
     
     let profileImageView : UIImageView = {
-       let imageView = UIImageView()
+        let imageView = UIImageView()
         imageView.image = #imageLiteral(resourceName: "userProfile")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
-    let chooseLogin : UIButtonRoundTopRightBottomRight = {
-        //title, background color , target
-        let button = UIButtonRoundTopRightBottomRight(type: .system)
-        button.setTitle("Login", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor(hexRGB: 0x4376CF)
-        button.addTarget(self, action: #selector(handleChooseLogin), for: .touchUpInside)
-        return button
+    let loginRegisterSegmentedControl : UISegmentedControl = {
+        let sc = UISegmentedControl(items: ["Register", "Login"])
+        sc.translatesAutoresizingMaskIntoConstraints = false
+        sc.backgroundColor =  UIColor(hexRGB: 0x4376CF)
+        sc.tintColor = .white
+        sc.selectedSegmentIndex = 0
+        sc.addTarget(self, action: #selector(handleLoginRegisterChange), for: .valueChanged   )
+        return sc
+        
     }()
     
-    let chooseRegister : UIButtonRoundTopLeftBottomLeft = {
-        let button = UIButtonRoundTopLeftBottomLeft(type: .system)
-        button.setTitle("Register", for: .normal)
-        button.setTitleColor(UIColor(hexRGB: 0x4376CF), for: .normal)
-        button.backgroundColor = .white
-        button.addTarget(self, action: #selector(handleChooseRegister), for: .touchUpInside)
-        return button
-    }()
- 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(hexRGB: 0x4390bc)
-     
+        
         view.addSubview(inputsContainerView)
         view.addSubview(loginRegisterButton)
         view.addSubview(profileImageView)
-       
+        view.addSubview(loginRegisterSegmentedControl)
+        
         setupInputsContainer()
         setupLoginRegisterButton()
-        setupChooseLoginRegister()
         setupProfileImageView()
+        setupLoginRegisterSegmentedControl()
     }
     
-  
     
- 
+    
+    
     override var preferredStatusBarStyle: UIStatusBarStyle{
         return .lightContent
     }
 }
 
 
-
-
-
-extension UIColor {
-    
-    convenience init(r: CGFloat , g: CGFloat , b: CGFloat){
-        self.init(red: r/255, green: g/255, blue: b/255, alpha: 1.0)
-    }
-    
-    convenience init(hexRGB : Int ){
-        let R = CGFloat((hexRGB >> 16) & 0xFF)
-        let G = CGFloat((hexRGB >> 8) & 0xFF)
-        let B = CGFloat(hexRGB & 0xFF)
-        self.init(r: R, g: G, b: B)
-    }
-    
-}
-
-extension UIButton {
-    func roundCorners(corners: UIRectCorner, radius: CGFloat) {
-        let path = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
-        let mask = CAShapeLayer()
-        mask.path = path.cgPath
-        layer.mask = mask
-    }
-}
