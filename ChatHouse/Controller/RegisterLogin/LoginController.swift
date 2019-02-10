@@ -54,6 +54,7 @@ class LoginController: UIViewController, ImagePickerDelegate {
         let textfield = UITextField()
         textfield.placeholder = "Enter your password"
         textfield.translatesAutoresizingMaskIntoConstraints = false
+        textfield.isSecureTextEntry = true
         return textfield
     }()
 

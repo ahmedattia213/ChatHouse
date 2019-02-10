@@ -48,7 +48,6 @@ extension LoginController {
         
     }
     
-    
     private func registerUserIntoDatabaseWithUid(uid: String, values: [String: AnyObject]) {
         var ref: DatabaseReference!
         ref = Database.database().reference()
