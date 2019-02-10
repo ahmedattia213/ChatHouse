@@ -10,14 +10,20 @@
 		68DAEAC74720CDE49D794A4D /* Pods_ChatHouse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EC3E63B5DDBC54F3EBE1ED7 /* Pods_ChatHouse.framework */; };
 		C545D84021F7E12E00F6722C /* CustomUIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C545D83F21F7E12E00F6722C /* CustomUIButton.swift */; };
 		C545D84221F7E1AC00F6722C /* CustomColorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C545D84121F7E1AC00F6722C /* CustomColorHelper.swift */; };
+		C545D84421FA8E3100F6722C /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C545D84321FA8E3100F6722C /* NewMessageController.swift */; };
 		C577525621EF5E9A0043974A /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C577525521EF5E9A0043974A /* LoginController.swift */; };
 		C577527921F0DE220043974A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C577527821F0DE210043974A /* GoogleService-Info.plist */; };
-		C577527B21F1322E0043974A /* LoginControllerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C577527A21F1322E0043974A /* LoginControllerHelper.swift */; };
+		C577527B21F1322E0043974A /* ConstraintsSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C577527A21F1322E0043974A /* ConstraintsSetup.swift */; };
+		C58A57BD220A52620017A651 /* ImagePickerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58A57BC220A52620017A651 /* ImagePickerHelper.swift */; };
+		C5B54995220BB48D00062B82 /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B54994220BB48D00062B82 /* ImageHelper.swift */; };
+		C5BC3739220E22620012005A /* ImageViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BC3738220E22620012005A /* ImageViewHelper.swift */; };
 		C5C2015221EE979200B814DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C2015121EE979200B814DF /* AppDelegate.swift */; };
-		C5C2015421EE979200B814DF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C2015321EE979200B814DF /* ViewController.swift */; };
+		C5C2015421EE979200B814DF /* MessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C2015321EE979200B814DF /* MessagesController.swift */; };
 		C5C2015721EE979200B814DF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5C2015521EE979200B814DF /* Main.storyboard */; };
 		C5C2015921EE979500B814DF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5C2015821EE979500B814DF /* Assets.xcassets */; };
 		C5C2015C21EE979500B814DF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5C2015A21EE979500B814DF /* LaunchScreen.storyboard */; };
+		C5F4496C2208BD240096D9B2 /* LoginController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F4496B2208BD240096D9B2 /* LoginController+handlers.swift */; };
+		C5F4496F2208C6A60096D9B2 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F4496E2208C6A60096D9B2 /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,16 +31,22 @@
 		43A78535DBF9745EFA33877F /* Pods-ChatHouse.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatHouse.release.xcconfig"; path = "Pods/Target Support Files/Pods-ChatHouse/Pods-ChatHouse.release.xcconfig"; sourceTree = "<group>"; };
 		C545D83F21F7E12E00F6722C /* CustomUIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomUIButton.swift; sourceTree = "<group>"; };
 		C545D84121F7E1AC00F6722C /* CustomColorHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColorHelper.swift; sourceTree = "<group>"; };
+		C545D84321FA8E3100F6722C /* NewMessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
 		C577525521EF5E9A0043974A /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		C577527821F0DE210043974A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		C577527A21F1322E0043974A /* LoginControllerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginControllerHelper.swift; sourceTree = "<group>"; };
+		C577527A21F1322E0043974A /* ConstraintsSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstraintsSetup.swift; sourceTree = "<group>"; };
+		C58A57BC220A52620017A651 /* ImagePickerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerHelper.swift; sourceTree = "<group>"; };
+		C5B54994220BB48D00062B82 /* ImageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
+		C5BC3738220E22620012005A /* ImageViewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewHelper.swift; sourceTree = "<group>"; };
 		C5C2014E21EE979200B814DF /* ChatHouse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatHouse.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5C2015121EE979200B814DF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		C5C2015321EE979200B814DF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		C5C2015321EE979200B814DF /* MessagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesController.swift; sourceTree = "<group>"; };
 		C5C2015621EE979200B814DF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C5C2015821EE979500B814DF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C5C2015B21EE979500B814DF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C5C2015D21EE979500B814DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C5F4496B2208BD240096D9B2 /* LoginController+handlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginController+handlers.swift"; sourceTree = "<group>"; };
+		C5F4496E2208C6A60096D9B2 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		EA23BC35BB2E5F530EFB7226 /* Pods-ChatHouse.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatHouse.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ChatHouse/Pods-ChatHouse.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -62,7 +74,10 @@
 			isa = PBXGroup;
 			children = (
 				C545D83F21F7E12E00F6722C /* CustomUIButton.swift */,
+				C58A57BC220A52620017A651 /* ImagePickerHelper.swift */,
 				C545D84121F7E1AC00F6722C /* CustomColorHelper.swift */,
+				C5B54994220BB48D00062B82 /* ImageHelper.swift */,
+				C5BC3738220E22620012005A /* ImageViewHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -70,9 +85,9 @@
 		C577525421EF5E630043974A /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				C5C2015321EE979200B814DF /* ViewController.swift */,
-				C577525521EF5E9A0043974A /* LoginController.swift */,
-				C577527A21F1322E0043974A /* LoginControllerHelper.swift */,
+				C5F4496A2208BCC50096D9B2 /* RegisterLogin */,
+				C5C2015321EE979200B814DF /* MessagesController.swift */,
+				C545D84321FA8E3100F6722C /* NewMessageController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -98,6 +113,7 @@
 		C5C2015021EE979200B814DF /* ChatHouse */ = {
 			isa = PBXGroup;
 			children = (
+				C5F4496D2208C69C0096D9B2 /* Model */,
 				C545D83E21F7E11300F6722C /* Helpers */,
 				C577525421EF5E630043974A /* Controller */,
 				C5C2015121EE979200B814DF /* AppDelegate.swift */,
@@ -108,6 +124,24 @@
 				C577527821F0DE210043974A /* GoogleService-Info.plist */,
 			);
 			path = ChatHouse;
+			sourceTree = "<group>";
+		};
+		C5F4496A2208BCC50096D9B2 /* RegisterLogin */ = {
+			isa = PBXGroup;
+			children = (
+				C577527A21F1322E0043974A /* ConstraintsSetup.swift */,
+				C577525521EF5E9A0043974A /* LoginController.swift */,
+				C5F4496B2208BD240096D9B2 /* LoginController+handlers.swift */,
+			);
+			path = RegisterLogin;
+			sourceTree = "<group>";
+		};
+		C5F4496D2208C69C0096D9B2 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C5F4496E2208C6A60096D9B2 /* User.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		DE17F5A243C8B97856C676D6 /* Pods */ = {
@@ -198,6 +232,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-ChatHouse/Pods-ChatHouse-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -205,6 +240,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -238,12 +274,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5F4496C2208BD240096D9B2 /* LoginController+handlers.swift in Sources */,
 				C545D84221F7E1AC00F6722C /* CustomColorHelper.swift in Sources */,
-				C5C2015421EE979200B814DF /* ViewController.swift in Sources */,
+				C5C2015421EE979200B814DF /* MessagesController.swift in Sources */,
 				C577525621EF5E9A0043974A /* LoginController.swift in Sources */,
 				C545D84021F7E12E00F6722C /* CustomUIButton.swift in Sources */,
+				C5F4496F2208C6A60096D9B2 /* User.swift in Sources */,
+				C545D84421FA8E3100F6722C /* NewMessageController.swift in Sources */,
 				C5C2015221EE979200B814DF /* AppDelegate.swift in Sources */,
-				C577527B21F1322E0043974A /* LoginControllerHelper.swift in Sources */,
+				C577527B21F1322E0043974A /* ConstraintsSetup.swift in Sources */,
+				C5BC3739220E22620012005A /* ImageViewHelper.swift in Sources */,
+				C58A57BD220A52620017A651 /* ImagePickerHelper.swift in Sources */,
+				C5B54995220BB48D00062B82 /* ImageHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

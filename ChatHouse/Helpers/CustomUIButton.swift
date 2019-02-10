@@ -8,17 +8,16 @@
 
 import UIKit
 
-
 class UIButtonRoundTopRightBottomRight: UIButton {
     override func layoutSubviews() {
         super.layoutSubviews()
         self.clipsToBounds = true
         self.layer.cornerRadius = 10
-        self.layer.maskedCorners = [.layerMaxXMinYCorner , .layerMaxXMaxYCorner]
+        self.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
     }
 }
 
-class UIButtonRoundTopLeftBottomLeft : UIButton {
+class UIButtonRoundTopLeftBottomLeft: UIButton {
     override func layoutSubviews() {
         super.layoutSubviews()
         self.clipsToBounds = true

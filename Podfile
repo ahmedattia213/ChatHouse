@@ -10,7 +10,7 @@ target 'ChatHouse' do
   pod 'Firebase/Auth'
   pod 'Firebase/Database'
   pod 'Firebase/Storage'
-
-
+  pod 'SwiftLint'
+  pod 'Kingfisher', '~> 4.8.1'
 
 end
