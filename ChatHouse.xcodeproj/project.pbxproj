@@ -17,6 +17,7 @@
 		C58A57BD220A52620017A651 /* ImagePickerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58A57BC220A52620017A651 /* ImagePickerHelper.swift */; };
 		C5B54995220BB48D00062B82 /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B54994220BB48D00062B82 /* ImageHelper.swift */; };
 		C5BC3739220E22620012005A /* ImageViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BC3738220E22620012005A /* ImageViewHelper.swift */; };
+		C5BC373D220FA83C0012005A /* FirebaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BC373C220FA83C0012005A /* FirebaseHelper.swift */; };
 		C5C2015221EE979200B814DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C2015121EE979200B814DF /* AppDelegate.swift */; };
 		C5C2015421EE979200B814DF /* MessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C2015321EE979200B814DF /* MessagesController.swift */; };
 		C5C2015721EE979200B814DF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5C2015521EE979200B814DF /* Main.storyboard */; };
@@ -38,6 +39,7 @@
 		C58A57BC220A52620017A651 /* ImagePickerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerHelper.swift; sourceTree = "<group>"; };
 		C5B54994220BB48D00062B82 /* ImageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
 		C5BC3738220E22620012005A /* ImageViewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewHelper.swift; sourceTree = "<group>"; };
+		C5BC373C220FA83C0012005A /* FirebaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseHelper.swift; sourceTree = "<group>"; };
 		C5C2014E21EE979200B814DF /* ChatHouse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatHouse.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5C2015121EE979200B814DF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C5C2015321EE979200B814DF /* MessagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesController.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 				C545D84121F7E1AC00F6722C /* CustomColorHelper.swift */,
 				C5B54994220BB48D00062B82 /* ImageHelper.swift */,
 				C5BC3738220E22620012005A /* ImageViewHelper.swift */,
+				C5BC373C220FA83C0012005A /* FirebaseHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -283,6 +286,7 @@
 				C545D84421FA8E3100F6722C /* NewMessageController.swift in Sources */,
 				C5C2015221EE979200B814DF /* AppDelegate.swift in Sources */,
 				C577527B21F1322E0043974A /* ConstraintsSetup.swift in Sources */,
+				C5BC373D220FA83C0012005A /* FirebaseHelper.swift in Sources */,
 				C5BC3739220E22620012005A /* ImageViewHelper.swift in Sources */,
 				C58A57BD220A52620017A651 /* ImagePickerHelper.swift in Sources */,
 				C5B54995220BB48D00062B82 /* ImageHelper.swift in Sources */,

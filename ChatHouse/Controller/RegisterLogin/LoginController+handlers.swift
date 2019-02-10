@@ -58,7 +58,9 @@ extension LoginController {
                 print(err!)
                 return
             }
-            self.navigationItem.title = values["name"] as? String
+            let user = User()
+            user.setValuesForKeys(values)
+            self.messagesController?.setupNavBarWithUser(user: user)
             self.dismiss(animated: true, completion: nil)
         }
     }
@@ -67,13 +69,16 @@ extension LoginController {
         guard let email = emailTextField.text, let password = passwordTextField.text else {
             return
         }
-        
-        Auth.auth().signIn(withEmail: email, password: password) { (_, error) in
+        Auth.auth().signIn(withEmail: email, password: password) { (AuthDataResult, error) in
             if error != nil {
                 return
             }
-            self.messagesController?.setupNavBarTitle()
-            self.dismiss(animated: true, completion: nil)
+            if let uid = AuthDataResult?.user.uid {
+                FirebaseHelper.fetchCurrentUserWithUid(uid: uid, completionHandler: { (user) in
+                    self.messagesController?.setupNavBarWithUser(user: user)
+                    self.dismiss(animated: true, completion: nil)
+                })
+            }
         }
     }
     
