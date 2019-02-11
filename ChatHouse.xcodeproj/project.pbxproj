@@ -18,9 +18,9 @@
 		C5B54995220BB48D00062B82 /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B54994220BB48D00062B82 /* ImageHelper.swift */; };
 		C5BC3739220E22620012005A /* ImageViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BC3738220E22620012005A /* ImageViewHelper.swift */; };
 		C5BC373D220FA83C0012005A /* FirebaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BC373C220FA83C0012005A /* FirebaseHelper.swift */; };
+		C5BC373F2210BD190012005A /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BC373E2210BD190012005A /* ChatLogController.swift */; };
 		C5C2015221EE979200B814DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C2015121EE979200B814DF /* AppDelegate.swift */; };
 		C5C2015421EE979200B814DF /* MessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C2015321EE979200B814DF /* MessagesController.swift */; };
-		C5C2015721EE979200B814DF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5C2015521EE979200B814DF /* Main.storyboard */; };
 		C5C2015921EE979500B814DF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5C2015821EE979500B814DF /* Assets.xcassets */; };
 		C5C2015C21EE979500B814DF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5C2015A21EE979500B814DF /* LaunchScreen.storyboard */; };
 		C5F4496C2208BD240096D9B2 /* LoginController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F4496B2208BD240096D9B2 /* LoginController+handlers.swift */; };
@@ -40,10 +40,10 @@
 		C5B54994220BB48D00062B82 /* ImageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
 		C5BC3738220E22620012005A /* ImageViewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewHelper.swift; sourceTree = "<group>"; };
 		C5BC373C220FA83C0012005A /* FirebaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseHelper.swift; sourceTree = "<group>"; };
+		C5BC373E2210BD190012005A /* ChatLogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
 		C5C2014E21EE979200B814DF /* ChatHouse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatHouse.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5C2015121EE979200B814DF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C5C2015321EE979200B814DF /* MessagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesController.swift; sourceTree = "<group>"; };
-		C5C2015621EE979200B814DF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C5C2015821EE979500B814DF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C5C2015B21EE979500B814DF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C5C2015D21EE979500B814DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -91,6 +91,7 @@
 				C5F4496A2208BCC50096D9B2 /* RegisterLogin */,
 				C5C2015321EE979200B814DF /* MessagesController.swift */,
 				C545D84321FA8E3100F6722C /* NewMessageController.swift */,
+				C5BC373E2210BD190012005A /* ChatLogController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -120,7 +121,6 @@
 				C545D83E21F7E11300F6722C /* Helpers */,
 				C577525421EF5E630043974A /* Controller */,
 				C5C2015121EE979200B814DF /* AppDelegate.swift */,
-				C5C2015521EE979200B814DF /* Main.storyboard */,
 				C5C2015821EE979500B814DF /* Assets.xcassets */,
 				C5C2015A21EE979500B814DF /* LaunchScreen.storyboard */,
 				C5C2015D21EE979500B814DF /* Info.plist */,
@@ -219,7 +219,6 @@
 				C5C2015C21EE979500B814DF /* LaunchScreen.storyboard in Resources */,
 				C577527921F0DE220043974A /* GoogleService-Info.plist in Resources */,
 				C5C2015921EE979500B814DF /* Assets.xcassets in Resources */,
-				C5C2015721EE979200B814DF /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -235,7 +234,6 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-ChatHouse/Pods-ChatHouse-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
-				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -243,7 +241,6 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -287,6 +284,7 @@
 				C5C2015221EE979200B814DF /* AppDelegate.swift in Sources */,
 				C577527B21F1322E0043974A /* ConstraintsSetup.swift in Sources */,
 				C5BC373D220FA83C0012005A /* FirebaseHelper.swift in Sources */,
+				C5BC373F2210BD190012005A /* ChatLogController.swift in Sources */,
 				C5BC3739220E22620012005A /* ImageViewHelper.swift in Sources */,
 				C58A57BD220A52620017A651 /* ImagePickerHelper.swift in Sources */,
 				C5B54995220BB48D00062B82 /* ImageHelper.swift in Sources */,
@@ -296,14 +294,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		C5C2015521EE979200B814DF /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C5C2015621EE979200B814DF /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		C5C2015A21EE979500B814DF /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

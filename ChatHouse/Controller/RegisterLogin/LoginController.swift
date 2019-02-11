@@ -99,7 +99,7 @@ class LoginController: UIViewController, ImagePickerDelegate {
         super.viewDidLoad()
         view.backgroundColor = UIColor(hexRGB: 0x4390bc)
         self.imagePicker = ImagePicker(presentationController: self, delegate: self)
-        hideKeyboard()
+        self.hideKeyboard()
         view.addSubview(inputsContainerView)
         view.addSubview(loginRegisterButton)
         view.addSubview(profileImageView)
@@ -120,11 +120,5 @@ class LoginController: UIViewController, ImagePickerDelegate {
         return .lightContent
     }
 
-    func hideKeyboard() {
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
-    }
-
-    @objc func dismissKeyboard() {
-      view.endEditing(true)
-    }
+ 
 }

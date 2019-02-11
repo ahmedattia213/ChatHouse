@@ -17,10 +17,11 @@ class MessagesController: UITableViewController {
 
         let img = UIImage(named: "newMessage")?.withRenderingMode(.alwaysOriginal)
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: img, style: .plain, target: self, action: #selector(handleNewMessage))
-    checkIfUserLoggedIn()
     }
    
-
+    override func viewDidAppear(_ animated: Bool) {
+        checkIfUserLoggedIn()
+    }
     @objc func handleNewMessage() {
         let newMessageController = NewMessageController()
         let navController = UINavigationController(rootViewController: newMessageController)
@@ -62,6 +63,7 @@ class MessagesController: UITableViewController {
     
     func setupNavBarWithUser(user: User){
         let titleView = UIView()
+        titleView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTitleViewTapped)))
         titleView.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         self.navigationItem.titleView = titleView
         
@@ -78,12 +80,12 @@ class MessagesController: UITableViewController {
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.clipsToBounds = true
-        profileImageView.layer.cornerRadius = titleView.frame.height / 2.0
+        profileImageView.layer.cornerRadius = 20
 
         profileImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
         profileImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-        profileImageView.heightAnchor.constraint(equalTo: titleView.heightAnchor).isActive = true
-        profileImageView.widthAnchor.constraint(equalTo: profileImageView.heightAnchor).isActive = true
+        profileImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        profileImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
 
         let nameLabel = UILabel()
         nameLabel.font = UIFont.systemFont(ofSize: 16)
@@ -95,11 +97,16 @@ class MessagesController: UITableViewController {
         nameLabel.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
         nameLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
         nameLabel.heightAnchor.constraint(equalTo: profileImageView.heightAnchor ).isActive = true
-        
+
         containerView.centerXAnchor.constraint(equalTo: titleView.centerXAnchor).isActive = true
         containerView.centerYAnchor.constraint(equalTo: titleView.centerYAnchor).isActive = true
-        
-        
+ 
+    }
+    
+    @objc func handleTitleViewTapped(){
+        let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout())
+        navigationController?.pushViewController(chatLogController, animated: true)
+        print("titleview tapped")
     }
 }
 
