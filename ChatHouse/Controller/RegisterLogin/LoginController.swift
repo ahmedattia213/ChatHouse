@@ -110,7 +110,6 @@ class LoginController: UIViewController, ImagePickerDelegate {
         setupProfileImageView()
         setupLoginRegisterSegmentedControl()
     }
-    
 
     func didSelect(image: UIImage?) {
         self.profileImageView.image = image
@@ -120,5 +119,4 @@ class LoginController: UIViewController, ImagePickerDelegate {
         return .lightContent
     }
 
- 
 }

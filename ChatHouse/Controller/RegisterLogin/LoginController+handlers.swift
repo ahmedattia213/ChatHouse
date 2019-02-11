@@ -13,7 +13,7 @@ import Firebase
 import FirebaseStorage
 
 extension LoginController {
-    
+
     func handleRegister() {
         guard let email = emailTextField.text, let password = passwordTextField.text, let name = nameTextField.text else { return }
         Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
@@ -24,10 +24,8 @@ extension LoginController {
             guard let uid =  user?.user.uid else { return }
             let imageName = NSUUID().uuidString
             let storageRef = Storage.storage().reference().child("myProfileImages").child("\(imageName).png")
-            
-            
-            if let profileImage = self.profileImageView.image , let uploadData = UIImage.jpegData(profileImage)(compressionQuality: 0.1)
-            {
+
+            if let profileImage = self.profileImageView.image, let uploadData = UIImage.jpegData(profileImage)(compressionQuality: 0.1) {
                 storageRef.putData(uploadData, metadata: nil, completion: { (_, err) in
                     if err != nil {
                         print(err!)
@@ -41,14 +39,14 @@ extension LoginController {
                         let values = ["name": name, "email": email, "profileImageUrl": profImageUrl!.absoluteString]
                         self.registerUserIntoDatabaseWithUid(uid: uid, values: values as [String: AnyObject] )
                     })
-                    
+
                 })
-                
+
             }
         }
-        
+
     }
-    
+
     private func registerUserIntoDatabaseWithUid(uid: String, values: [String: AnyObject]) {
         var ref: DatabaseReference!
         ref = Database.database().reference()
@@ -64,7 +62,7 @@ extension LoginController {
             self.dismiss(animated: true, completion: nil)
         }
     }
-    
+
     func handleLogin() {
         guard let email = emailTextField.text, let password = passwordTextField.text else {
             return
@@ -81,27 +79,27 @@ extension LoginController {
             }
         }
     }
-    
+
     @objc func handleRegisterLoginButton() {
         loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? handleRegister() : handleLogin()
     }
-    
+
     @objc func handleImageClick() {
         print("ew3a")
         self.imagePicker.present(from: self.view)
     }
-    
+
     @objc func handleLoginRegisterChange() {
-        
+
         let title = loginRegisterSegmentedControl.titleForSegment(at: loginRegisterSegmentedControl.selectedSegmentIndex)
         loginRegisterButton.setTitle(title, for: .normal)
-        
+
         inputsContainerViewHeightAnchor?.constant = loginRegisterSegmentedControl.selectedSegmentIndex == 0 ?  150 : 100
-        
+
         nameTextFieldHeightAnchor?.isActive = false
         nameTextFieldHeightAnchor = nameTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 1/3 : 0)
         nameTextFieldHeightAnchor?.isActive = true
-        
+
         emailTextFieldHeightAnchor?.isActive = false
         emailTextFieldHeightAnchor = emailTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 1/3 : 1/2 )
         emailTextFieldHeightAnchor?.isActive = true

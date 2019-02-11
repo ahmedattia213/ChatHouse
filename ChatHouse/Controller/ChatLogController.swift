@@ -11,16 +11,16 @@ import FirebaseDatabase
 import FirebaseAuth
 
 class ChatLogController: UICollectionViewController {
-    
+
     let chatCellId = "chatCellId"
-    
-    let containerView : UIView = {
+
+    let containerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
-    let sendButton : UIButton = {
+
+    let sendButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = .white
         button.setTitle("send", for: .normal)
@@ -29,8 +29,8 @@ class ChatLogController: UICollectionViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
-    lazy var chatTextView : UITextView = {
+
+    lazy var chatTextView: UITextView = {
         let textview = UITextView()
         textview.text = "Enter your message.."
         textview.textColor = .lightGray
@@ -39,24 +39,23 @@ class ChatLogController: UICollectionViewController {
         textview.delegate = self
         return textview
     }()
-    let separatorLineView : UIView = {
+    let separatorLineView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(hexRGB: 0xDCDCDC)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hideKeyboard()
         collectionView.backgroundColor = .white
         navigationItem.title = "ChatLog"
         setupInputComponentsConstraints()
-        
+
     }
-    
-    
-    func setupInputComponentsConstraints(){
+
+    func setupInputComponentsConstraints() {
         view.addSubview(containerView)
         containerView.addSubview(sendButton)
         containerView.addSubview(chatTextView)
@@ -81,26 +80,26 @@ class ChatLogController: UICollectionViewController {
         separatorLineView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
         separatorLineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
     }
-    
+
     @objc func handleSendButton() {
         let currentUserUid = Auth.auth().currentUser?.uid
         FirebaseHelper.fetchCurrentUserWithUid(uid: currentUserUid!) { (user) in
             let ref = Database.database().reference().child("Messages").childByAutoId()
-            let values = ["message": self.chatTextView.text! , "sender": user.name]
-            ref.updateChildValues(values as [AnyHashable : Any])
+            let values = ["message": self.chatTextView.text!, "sender": user.name]
+            ref.updateChildValues(values as [AnyHashable: Any])
             self.chatTextView.text = ""
         }
-        
+
     }
 }
 
-extension ChatLogController: UITextViewDelegate{
+extension ChatLogController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if   textView.text == "Enter your message.." && textView.textColor == .lightGray  {
+        if   textView.text == "Enter your message.." && textView.textColor == .lightGray {
             textView.text = ""
             textView.textColor = .black
             textView.font = UIFont.systemFont(ofSize: 14)
-            
+
         }
         textView.becomeFirstResponder()
     }
@@ -113,4 +112,3 @@ extension ChatLogController: UITextViewDelegate{
         textView.resignFirstResponder()
     }
 }
-

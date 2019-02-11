@@ -18,7 +18,7 @@ class MessagesController: UITableViewController {
         let img = UIImage(named: "newMessage")?.withRenderingMode(.alwaysOriginal)
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: img, style: .plain, target: self, action: #selector(handleNewMessage))
     }
-   
+
     override func viewDidAppear(_ animated: Bool) {
         checkIfUserLoggedIn()
     }
@@ -27,7 +27,7 @@ class MessagesController: UITableViewController {
         let navController = UINavigationController(rootViewController: newMessageController)
         present(navController, animated: true, completion: nil)
     }
-    
+
     @objc func handleLogout() {
         do {
             try Auth.auth().signOut()
@@ -38,45 +38,45 @@ class MessagesController: UITableViewController {
         loginController.messagesController = self
         present(loginController, animated: true, completion: nil)
     }
-    
+
     func checkIfUserLoggedIn() {
         if Auth.auth().currentUser?.uid == nil {
             perform(#selector(handleLogout), with: nil, afterDelay: 0)
         } else {
             setupNavBarTitle()
-            
+
         }
     }
-    
-    func setupNavBarTitle(){
-        
+
+    func setupNavBarTitle() {
+
         let myUser = Database.database().reference().child("users").child(Auth.auth().currentUser!.uid)
         myUser.observe(DataEventType.value) { (snapshot) in
-            if let snapshotValue = snapshot.value as? [String : AnyObject] {
+            if let snapshotValue = snapshot.value as? [String: AnyObject] {
                 let user = User()
                 user.setValuesForKeys(snapshotValue)
                 self.setupNavBarWithUser(user: user)
             }
         }
-        
+
     }
-    
-    func setupNavBarWithUser(user: User){
+
+    func setupNavBarWithUser(user: User) {
         let titleView = UIView()
         titleView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTitleViewTapped)))
         titleView.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         self.navigationItem.titleView = titleView
-        
+
         let containerView = UIView()
         titleView.addSubview(containerView)
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         let profileImageView = UIImageView()
         if let profileImageUrl = user.profileImageUrl {
             profileImageView.retrieveDataFromUrl(urlString: profileImageUrl)
         }
         containerView.addSubview(profileImageView)
-        
+
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.clipsToBounds = true
@@ -91,7 +91,7 @@ class MessagesController: UITableViewController {
         nameLabel.font = UIFont.systemFont(ofSize: 16)
         nameLabel.text = user.name
         containerView.addSubview(nameLabel)
-        
+
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 8).isActive = true
         nameLabel.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
@@ -100,13 +100,12 @@ class MessagesController: UITableViewController {
 
         containerView.centerXAnchor.constraint(equalTo: titleView.centerXAnchor).isActive = true
         containerView.centerYAnchor.constraint(equalTo: titleView.centerYAnchor).isActive = true
- 
+
     }
-    
-    @objc func handleTitleViewTapped(){
+
+    @objc func handleTitleViewTapped() {
         let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout())
         navigationController?.pushViewController(chatLogController, animated: true)
         print("titleview tapped")
     }
 }
-
