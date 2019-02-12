@@ -10,20 +10,54 @@ import UIKit
 import Firebase
 
 class MessagesController: UITableViewController {
-
+    var myMessages = [Message]()
+    var messagesCellId = "messagesCellId"
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.register(MessageCell.self, forCellReuseIdentifier: messagesCellId)
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
 
         let img = UIImage(named: "newMessage")?.withRenderingMode(.alwaysOriginal)
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: img, style: .plain, target: self, action: #selector(handleNewMessage))
+        retrieveMyMessages()
     }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return myMessages.count
+    }
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+                let cell = tableView.dequeueReusableCell(withIdentifier: messagesCellId) as? MessageCell
+                let myMessage = myMessages[indexPath.row]
+                cell?.textLabel?.text = myMessage.message
+               return cell!
 
+    }
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 72
+    }
+    
+
+    func retrieveMyMessages() {
+        let messagesRef = Database.database().reference().child(FirebaseMessagesKey)
+        messagesRef.observe(DataEventType.value) { (snapshot) in
+            let snapshotValue = snapshot.value as? [String: AnyObject] ?? [:]
+            
+            for snap in snapshotValue {
+                let message = Message()
+                message.setValuesForKeys(snap.value as! [String : AnyObject] )
+                self.myMessages.append(message)
+            }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
     override func viewDidAppear(_ animated: Bool) {
         checkIfUserLoggedIn()
     }
     @objc func handleNewMessage() {
         let newMessageController = NewMessageController()
+        newMessageController.messagesController = self
         let navController = UINavigationController(rootViewController: newMessageController)
         present(navController, animated: true, completion: nil)
     }
@@ -50,7 +84,7 @@ class MessagesController: UITableViewController {
 
     func setupNavBarTitle() {
 
-        let myUser = Database.database().reference().child("users").child(Auth.auth().currentUser!.uid)
+        let myUser = Database.database().reference().child(FirebaseUsersKey).child(Auth.auth().currentUser!.uid)
         myUser.observe(DataEventType.value) { (snapshot) in
             if let snapshotValue = snapshot.value as? [String: AnyObject] {
                 let user = User()
@@ -63,7 +97,6 @@ class MessagesController: UITableViewController {
 
     func setupNavBarWithUser(user: User) {
         let titleView = UIView()
-        titleView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTitleViewTapped)))
         titleView.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         self.navigationItem.titleView = titleView
 
@@ -103,9 +136,45 @@ class MessagesController: UITableViewController {
 
     }
 
-    @objc func handleTitleViewTapped() {
+    @objc func showChatLogControllerForUser(user: User) {
         let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout())
+        chatLogController.user = user
         navigationController?.pushViewController(chatLogController, animated: true)
         print("titleview tapped")
+    }
+    
+   
+}
+
+
+class MessageCell : UITableViewCell {
+    let profileImageView : UIImageView = {
+       let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "anyface")
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 24
+        return imageView
+    }()
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+       textLabel?.frame = CGRect(x: profileImageView.frame.maxX + 8, y: textLabel!.frame.origin.y, width: textLabel!.frame.width, height: textLabel!.frame.height)
+        
+    
+    }
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
+        addSubview(profileImageView)
+        profileImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor , constant: 8).isActive = true
+        profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        profileImageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        profileImageView.widthAnchor.constraint(equalToConstant: 48).isActive = true
+
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

@@ -8,7 +8,9 @@
 
 import Foundation
 
+
 class User: NSObject {
+   @objc var id: String?
    @objc var email: String?
    @objc var name: String?
    @objc var profileImageUrl: String?

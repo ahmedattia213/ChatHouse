@@ -23,7 +23,7 @@ extension LoginController {
             }
             guard let uid =  user?.user.uid else { return }
             let imageName = NSUUID().uuidString
-            let storageRef = Storage.storage().reference().child("myProfileImages").child("\(imageName).png")
+            let storageRef = Storage.storage().reference().child(FireBaseStorageImagesKey).child("\(imageName).png")
 
             if let profileImage = self.profileImageView.image, let uploadData = UIImage.jpegData(profileImage)(compressionQuality: 0.1) {
                 storageRef.putData(uploadData, metadata: nil, completion: { (_, err) in
@@ -50,7 +50,7 @@ extension LoginController {
     private func registerUserIntoDatabaseWithUid(uid: String, values: [String: AnyObject]) {
         var ref: DatabaseReference!
         ref = Database.database().reference()
-        let usersRef = ref.child("users").child(uid)
+        let usersRef = ref.child(FirebaseUsersKey).child(uid)
         usersRef.updateChildValues(values) { (err, _) in
             if err != nil {
                 print(err!)
@@ -72,8 +72,8 @@ extension LoginController {
                 return
             }
             if let uid = AuthDataResult?.user.uid {
-                FirebaseHelper.fetchCurrentUserWithUid(uid: uid, completionHandler: { (user) in
-                    self.messagesController?.setupNavBarWithUser(user: user)
+                FirebaseHelper.fetchCurrentUserWithUid(uid: uid, completionHandler: { (currentUser) in
+                    self.messagesController?.setupNavBarWithUser(user: currentUser)
                     self.dismiss(animated: true, completion: nil)
                 })
             }

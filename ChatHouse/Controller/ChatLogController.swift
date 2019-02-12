@@ -11,15 +11,19 @@ import FirebaseDatabase
 import FirebaseAuth
 
 class ChatLogController: UICollectionViewController {
-
+    var user: User? {
+        didSet{
+            navigationItem.title = user?.name
+        }
+    }
     let chatCellId = "chatCellId"
-
+    
     let containerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-
+    
     let sendButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = .white
@@ -29,7 +33,7 @@ class ChatLogController: UICollectionViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-
+    
     lazy var chatTextView: UITextView = {
         let textview = UITextView()
         textview.text = "Enter your message.."
@@ -45,16 +49,15 @@ class ChatLogController: UICollectionViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hideKeyboard()
         collectionView.backgroundColor = .white
-        navigationItem.title = "ChatLog"
         setupInputComponentsConstraints()
-
+        
     }
-
+    
     func setupInputComponentsConstraints() {
         view.addSubview(containerView)
         containerView.addSubview(sendButton)
@@ -80,16 +83,15 @@ class ChatLogController: UICollectionViewController {
         separatorLineView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
         separatorLineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
     }
-
+    
     @objc func handleSendButton() {
-        let currentUserUid = Auth.auth().currentUser?.uid
-        FirebaseHelper.fetchCurrentUserWithUid(uid: currentUserUid!) { (user) in
-            let ref = Database.database().reference().child("Messages").childByAutoId()
-            let values = ["message": self.chatTextView.text!, "sender": user.name]
-            ref.updateChildValues(values as [AnyHashable: Any])
-            self.chatTextView.text = ""
-        }
-
+        let fromId = Auth.auth().currentUser?.uid
+        let toId = user!.id
+        let ref = Database.database().reference().child(FirebaseMessagesKey).childByAutoId()
+        let timestamp = Int(NSDate().timeIntervalSince1970)
+        let values = ["message": self.chatTextView.text!, "senderId": fromId! , "receiverId" : toId! , "timestamp": timestamp ] as [String : AnyObject]
+        ref.updateChildValues(values)
+        self.chatTextView.text = ""
     }
 }
 
@@ -99,7 +101,7 @@ extension ChatLogController: UITextViewDelegate {
             textView.text = ""
             textView.textColor = .black
             textView.font = UIFont.systemFont(ofSize: 14)
-
+            
         }
         textView.becomeFirstResponder()
     }

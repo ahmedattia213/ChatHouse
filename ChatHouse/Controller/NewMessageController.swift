@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 
 class NewMessageController: UITableViewController {
-
+    var messagesController : MessagesController?
     let cellID = "cellid"
     var users = [User]()
 
@@ -30,12 +30,13 @@ class NewMessageController: UITableViewController {
     }
 
     func fetchUsers() {
-        let usersRef = Database.database().reference().child("users")
+        let usersRef = Database.database().reference().child(FirebaseUsersKey)
         usersRef.observe(DataEventType.value) { (snapshot) in
             let snapshotValue = snapshot.value as? [String: AnyObject] ?? [:]
 
             for snap in snapshotValue {
                 let user = User()
+                user.id = snap.key
                 user.setValuesForKeys(snap.value as! [String: AnyObject])
                 user.email?.caseInsensitiveCompare((Auth.auth().currentUser?.email)!) == ComparisonResult.orderedSame ?  nil : self.users.append(user)
             }
@@ -48,7 +49,7 @@ class NewMessageController: UITableViewController {
 
     func fetchProfileImageWithCurrentUid(uid: String) -> UIImage {
         var image: UIImage?
-        let url = Database.database().reference().child("users").child(uid)
+        let url = Database.database().reference().child(FirebaseUsersKey).child(uid)
         url.observe(DataEventType.value) { (snapshot) in
             let snapshotValue = snapshot.value as? [String: AnyObject] ?? [:]
             let profileImageURLString = snapshotValue["profileImageUrl"] as! String
@@ -66,6 +67,15 @@ class NewMessageController: UITableViewController {
             cell?.profileImageView.retrieveDataFromUrl(urlString: profileImageUrl)
         }
         return cell!
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        dismiss(animated: true) {
+            let user = self.users[indexPath.row]
+            self.messagesController?.showChatLogControllerForUser(user: user)
+
+        }
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
