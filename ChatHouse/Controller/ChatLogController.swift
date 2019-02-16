@@ -90,7 +90,17 @@ class ChatLogController: UICollectionViewController {
         let ref = Database.database().reference().child(FirebaseMessagesKey).childByAutoId()
         let timestamp = Int(NSDate().timeIntervalSince1970)
         let values = ["message": self.chatTextView.text!, "senderId": fromId! , "receiverId" : toId! , "timestamp": timestamp ] as [String : AnyObject]
-        ref.updateChildValues(values)
+        ref.updateChildValues(values) { (error, reference) in
+            if error != nil {
+                print(error!)
+                return
+            }
+            let userMessagesRef = Database.database().reference().child(FirebaseUserMessagesKey).child(fromId!)
+            let messageId = ref.key
+            userMessagesRef.updateChildValues([messageId! : "done"])
+            let receiverMessageRef = Database.database().reference().child(FirebaseUserMessagesKey).child(toId!)
+            receiverMessageRef.updateChildValues([messageId! : "done"])
+        }
         self.chatTextView.text = ""
     }
 }

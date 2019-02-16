@@ -11,49 +11,81 @@ import Firebase
 
 class MessagesController: UITableViewController {
     var myMessages = [Message]()
-    var messagesCellId = "messagesCellId"
+    var messagesDictionary = [String : Message]()
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.register(MessageCell.self, forCellReuseIdentifier: messagesCellId)
+        tableView.register(UserCell.self, forCellReuseIdentifier: UserCell.cellID)
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
-
+        
         let img = UIImage(named: "newMessage")?.withRenderingMode(.alwaysOriginal)
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: img, style: .plain, target: self, action: #selector(handleNewMessage))
-        retrieveMyMessages()
     }
     
+    func popCurrentMessages(){
+        myMessages.removeAll()
+        messagesDictionary.removeAll()
+    }
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return myMessages.count
     }
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-                let cell = tableView.dequeueReusableCell(withIdentifier: messagesCellId) as? MessageCell
-                let myMessage = myMessages[indexPath.row]
-                cell?.textLabel?.text = myMessage.message
-               return cell!
 
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: UserCell.cellID) as? UserCell
+        cell?.message = myMessages[indexPath.row]
+        return cell!
+        
     }
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 72
     }
     
+    
+    func retrieveUserMessages(){
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
 
-    func retrieveMyMessages() {
-        let messagesRef = Database.database().reference().child(FirebaseMessagesKey)
-        messagesRef.observe(DataEventType.value) { (snapshot) in
+        let ref = Database.database().reference().child(FirebaseUserMessagesKey).child(uid)
+        ref.observe(DataEventType.value) { (snapshot) in
             let snapshotValue = snapshot.value as? [String: AnyObject] ?? [:]
             
             for snap in snapshotValue {
-                let message = Message()
-                message.setValuesForKeys(snap.value as! [String : AnyObject] )
-                self.myMessages.append(message)
-            }
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+                let messagesRef = Database.database().reference().child(FirebaseMessagesKey).child(snap.key)
+                messagesRef.observe(DataEventType.value, with: { (messageSnapshot) in
+                    let messageSnapshotValue = messageSnapshot.value as? [String: AnyObject] ?? [:]
+                    let message = Message()
+                        message.setValuesForKeys(messageSnapshotValue )
+                        if let receiverId = message.receiverId {
+                            var newerMessage : Message?
+                            if let olderMessage = self.messagesDictionary[receiverId] {
+                                 newerMessage = message.timestamp!.intValue > olderMessage.timestamp!.intValue ? message : olderMessage
+                            }
+                            self.messagesDictionary[receiverId] = newerMessage ?? message
+                            self.myMessages = Array(self.messagesDictionary.values)
+                            self.myMessages.sort(by: { (message1, message2) -> Bool in
+                                return message1.timestamp!.intValue > message2.timestamp!.intValue
+                            })
+                        }
+                    
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+                })
             }
         }
+        
+        
     }
+    
+   
     override func viewDidAppear(_ animated: Bool) {
         checkIfUserLoggedIn()
+        retrieveUserMessages()
+        myMessages.printArrayElements()
+        messagesDictionary.forEach { print("\($0): \(String(describing: $1.message))") }
+
+        
     }
     @objc func handleNewMessage() {
         let newMessageController = NewMessageController()
@@ -61,7 +93,7 @@ class MessagesController: UITableViewController {
         let navController = UINavigationController(rootViewController: newMessageController)
         present(navController, animated: true, completion: nil)
     }
-
+    
     @objc func handleLogout() {
         do {
             try Auth.auth().signOut()
@@ -70,20 +102,22 @@ class MessagesController: UITableViewController {
         }
         let loginController = LoginController()
         loginController.messagesController = self
+        self.popCurrentMessages()
+        tableView.reloadData()
         present(loginController, animated: true, completion: nil)
     }
-
+    
     func checkIfUserLoggedIn() {
         if Auth.auth().currentUser?.uid == nil {
             perform(#selector(handleLogout), with: nil, afterDelay: 0)
         } else {
             setupNavBarTitle()
-
+            
         }
     }
-
+    
     func setupNavBarTitle() {
-
+        
         let myUser = Database.database().reference().child(FirebaseUsersKey).child(Auth.auth().currentUser!.uid)
         myUser.observe(DataEventType.value) { (snapshot) in
             if let snapshotValue = snapshot.value as? [String: AnyObject] {
@@ -92,66 +126,65 @@ class MessagesController: UITableViewController {
                 self.setupNavBarWithUser(user: user)
             }
         }
-
+        
     }
-
+    
     func setupNavBarWithUser(user: User) {
         let titleView = UIView()
         titleView.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         self.navigationItem.titleView = titleView
-
+        
         let containerView = UIView()
         titleView.addSubview(containerView)
         containerView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         let profileImageView = UIImageView()
         if let profileImageUrl = user.profileImageUrl {
             profileImageView.retrieveDataFromUrl(urlString: profileImageUrl)
         }
         containerView.addSubview(profileImageView)
-
+        
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.clipsToBounds = true
         profileImageView.layer.cornerRadius = 20
-
+        
         profileImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
         profileImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
         profileImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
-
+        
         let nameLabel = UILabel()
         nameLabel.font = UIFont.systemFont(ofSize: 16)
         nameLabel.text = user.name
         containerView.addSubview(nameLabel)
-
+        
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 8).isActive = true
         nameLabel.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
         nameLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
         nameLabel.heightAnchor.constraint(equalTo: profileImageView.heightAnchor ).isActive = true
-
+        
         containerView.centerXAnchor.constraint(equalTo: titleView.centerXAnchor).isActive = true
         containerView.centerYAnchor.constraint(equalTo: titleView.centerYAnchor).isActive = true
-
+        
     }
-
+    
     @objc func showChatLogControllerForUser(user: User) {
         let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout())
         chatLogController.user = user
         navigationController?.pushViewController(chatLogController, animated: true)
-        print("titleview tapped")
     }
     
-   
+    
 }
 
 
 class MessageCell : UITableViewCell {
     let profileImageView : UIImageView = {
-       let imageView = UIImageView()
+        let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "anyface")
+        //  imageView.image = UIImage(named: "anyface")
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 24
@@ -160,9 +193,9 @@ class MessageCell : UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-       textLabel?.frame = CGRect(x: profileImageView.frame.maxX + 8, y: textLabel!.frame.origin.y, width: textLabel!.frame.width, height: textLabel!.frame.height)
+        textLabel?.frame = CGRect(x: profileImageView.frame.maxX + 8, y: textLabel!.frame.origin.y, width: textLabel!.frame.width, height: textLabel!.frame.height)
+        detailTextLabel?.frame = CGRect(x: profileImageView.frame.maxX + 8 , y: detailTextLabel!.frame.origin.y, width: detailTextLabel!.frame.width, height: detailTextLabel!.frame.height)
         
-    
     }
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
@@ -171,10 +204,21 @@ class MessageCell : UITableViewCell {
         profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
         profileImageView.widthAnchor.constraint(equalToConstant: 48).isActive = true
-
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+
+
+extension Array {
+    func printArrayElements(){
+        for element in self as! [Message] {
+            print(element.message!)
+        }
+        print()
     }
 }

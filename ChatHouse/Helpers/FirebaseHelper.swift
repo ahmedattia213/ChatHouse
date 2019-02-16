@@ -10,11 +10,12 @@ import Foundation
 import FirebaseDatabase
 
 let FirebaseMessagesKey = "messages"
+let FirebaseUserMessagesKey = "userMessages"
 let FirebaseUsersKey = "users"
 let FireBaseStorageImagesKey = "myProfileImages"
 
 class FirebaseHelper {
-    static func fetchCurrentUserWithUid(uid: String, completionHandler: @escaping (User) -> Void) {
+    static func fetchUserWithUid(uid: String, completionHandler: @escaping (User) -> Void) {
         let currentUser = User()
         let dbref = Database.database().reference().child(FirebaseUsersKey).child(uid)
         dbref.observe(DataEventType.value) { (snapshot) in

@@ -72,7 +72,7 @@ extension LoginController {
                 return
             }
             if let uid = AuthDataResult?.user.uid {
-                FirebaseHelper.fetchCurrentUserWithUid(uid: uid, completionHandler: { (currentUser) in
+                FirebaseHelper.fetchUserWithUid(uid: uid, completionHandler: { (currentUser) in
                     self.messagesController?.setupNavBarWithUser(user: currentUser)
                     self.dismiss(animated: true, completion: nil)
                 })
@@ -85,7 +85,6 @@ extension LoginController {
     }
 
     @objc func handleImageClick() {
-        print("ew3a")
         self.imagePicker.present(from: self.view)
     }
 
