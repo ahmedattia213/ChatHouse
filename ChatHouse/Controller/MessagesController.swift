@@ -11,7 +11,7 @@ import Firebase
 
 class MessagesController: UITableViewController {
     var myMessages = [Message]()
-    var messagesDictionary = [String : Message]()
+    var messagesDictionary = [DictionaryKey : Message]()
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(UserCell.self, forCellReuseIdentifier: UserCell.cellID)
@@ -24,12 +24,13 @@ class MessagesController: UITableViewController {
     func popCurrentMessages(){
         myMessages.removeAll()
         messagesDictionary.removeAll()
+        tableView.reloadData()
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return myMessages.count
     }
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UserCell.cellID) as? UserCell
         cell?.message = myMessages[indexPath.row]
@@ -45,7 +46,7 @@ class MessagesController: UITableViewController {
         guard let uid = Auth.auth().currentUser?.uid else {
             return
         }
-
+        
         let ref = Database.database().reference().child(FirebaseUserMessagesKey).child(uid)
         ref.observe(DataEventType.value) { (snapshot) in
             let snapshotValue = snapshot.value as? [String: AnyObject] ?? [:]
@@ -55,18 +56,20 @@ class MessagesController: UITableViewController {
                 messagesRef.observe(DataEventType.value, with: { (messageSnapshot) in
                     let messageSnapshotValue = messageSnapshot.value as? [String: AnyObject] ?? [:]
                     let message = Message()
-                        message.setValuesForKeys(messageSnapshotValue )
-                        if let receiverId = message.receiverId {
-                            var newerMessage : Message?
-                            if let olderMessage = self.messagesDictionary[receiverId] {
-                                 newerMessage = message.timestamp!.intValue > olderMessage.timestamp!.intValue ? message : olderMessage
-                            }
-                            self.messagesDictionary[receiverId] = newerMessage ?? message
-                            self.myMessages = Array(self.messagesDictionary.values)
-                            self.myMessages.sort(by: { (message1, message2) -> Bool in
-                                return message1.timestamp!.intValue > message2.timestamp!.intValue
-                            })
+                    message.setValuesForKeys(messageSnapshotValue )
+                    if let receiverId = message.receiverId {
+                        var newerMessage : Message?
+                        let dicKeyForMessage = DictionaryKey(receiverId: receiverId , senderId: message.senderId!)
+                        if let olderMessage = self.messagesDictionary[dicKeyForMessage] {
+                            newerMessage = message.timestamp!.intValue > olderMessage.timestamp!.intValue ? message : olderMessage
                         }
+                        self.messagesDictionary[dicKeyForMessage] = newerMessage ?? message
+                        self.filterSenderAndReceiverToGetLatestMessage(dictionary: &self.messagesDictionary)
+                        self.myMessages = Array(self.messagesDictionary.values)
+                        self.myMessages.sort(by: { (message1, message2) -> Bool in
+                            return message1.timestamp!.intValue > message2.timestamp!.intValue
+                        })
+                    }
                     
                     DispatchQueue.main.async {
                         self.tableView.reloadData()
@@ -78,13 +81,30 @@ class MessagesController: UITableViewController {
         
     }
     
-   
+    func filterSenderAndReceiverToGetLatestMessage(dictionary: inout [ DictionaryKey : Message]) {
+        // if i sent message to user, and user also sent message
+        //bring up te latest of both on the cell
+        for (key1,message1) in dictionary {
+            for (key2,message2) in dictionary {
+                if key2.receiverId == key1.senderId && key2.senderId == key1.receiverId {
+                    if message1.timestamp!.intValue > message2.timestamp!.intValue {
+                        dictionary.removeValue(forKey: key2)
+                    } else {
+                        dictionary.removeValue(forKey: key1)
+                    }
+                }
+            }
+        }
+        
+        
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         checkIfUserLoggedIn()
         retrieveUserMessages()
         myMessages.printArrayElements()
         messagesDictionary.forEach { print("\($0): \(String(describing: $1.message))") }
-
+        
         
     }
     @objc func handleNewMessage() {
@@ -103,7 +123,6 @@ class MessagesController: UITableViewController {
         let loginController = LoginController()
         loginController.messagesController = self
         self.popCurrentMessages()
-        tableView.reloadData()
         present(loginController, animated: true, completion: nil)
     }
     

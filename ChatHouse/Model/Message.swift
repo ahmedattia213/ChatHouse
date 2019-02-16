@@ -28,4 +28,9 @@ class Message : NSObject {
     }
 }
 
+struct DictionaryKey : Hashable {
+    var receiverId: String
+    var senderId: String
+}
+
 

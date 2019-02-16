@@ -59,6 +59,7 @@ extension LoginController {
             let user = User()
             user.setValuesForKeys(values)
             self.messagesController?.setupNavBarWithUser(user: user)
+            self.messagesController?.popCurrentMessages()
             self.dismiss(animated: true, completion: nil)
         }
     }
@@ -74,6 +75,7 @@ extension LoginController {
             if let uid = AuthDataResult?.user.uid {
                 FirebaseHelper.fetchUserWithUid(uid: uid, completionHandler: { (currentUser) in
                     self.messagesController?.setupNavBarWithUser(user: currentUser)
+                    self.messagesController?.popCurrentMessages()
                     self.dismiss(animated: true, completion: nil)
                 })
             }
