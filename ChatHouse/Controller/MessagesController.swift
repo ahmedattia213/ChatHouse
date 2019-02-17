@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import SVProgressHUD
 
 class MessagesController: UITableViewController {
     var myMessages = [Message]()
@@ -107,6 +108,9 @@ class MessagesController: UITableViewController {
             try Auth.auth().signOut()
         } catch let logoutError {
             print(logoutError)
+            SVProgressHUD.showError(withStatus: "\(logoutError.localizedDescription)")
+            SVProgressHUD.dismiss(withDelay: 1.2)
+            return
         }
         let loginController = LoginController()
         loginController.messagesController = self

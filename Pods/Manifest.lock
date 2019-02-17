@@ -73,6 +73,7 @@ PODS:
     - nanopb/encode (= 0.3.901)
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
+  - SVProgressHUD (2.2.5)
   - SwiftLint (0.29.3)
 
 DEPENDENCIES:
@@ -80,6 +81,7 @@ DEPENDENCIES:
   - Firebase/Core
   - Firebase/Database
   - Firebase/Storage
+  - SVProgressHUD
   - SwiftLint
 
 SPEC REPOS:
@@ -97,6 +99,7 @@ SPEC REPOS:
     - GTMSessionFetcher
     - leveldb-library
     - nanopb
+    - SVProgressHUD
     - SwiftLint
 
 SPEC CHECKSUMS:
@@ -113,8 +116,9 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 32aeca0aa144acea523e1c8e053089dec2cb98ca
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftLint: bfa7ca7b4d170cfaf0d236ca3ffd969e88a2f002
 
-PODFILE CHECKSUM: 807265116db58a6de9dc0b685880dd2c1d9194dd
+PODFILE CHECKSUM: de552f842b202fff4d5891c7387ca82cc8dec26d
 
 COCOAPODS: 1.5.3

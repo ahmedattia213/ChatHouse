@@ -9,18 +9,22 @@
 import Foundation
 import FirebaseAuth
 import Firebase
+import SVProgressHUD
 
 import FirebaseStorage
 
 extension LoginController {
 
     func handleRegister() {
+        SVProgressHUD.show(withStatus: "Please wait.. saving your profile:)")
         guard let email = emailTextField.text, let password = passwordTextField.text, let name = nameTextField.text else { return }
         Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
             if error != nil {
-                print(error!)
+                SVProgressHUD.showError(withStatus: "\(error!.localizedDescription)")
+                SVProgressHUD.dismiss(withDelay: 1.2)
                 return
             }
+           
             guard let uid =  user?.user.uid else { return }
             let imageName = NSUUID().uuidString
             let storageRef = Storage.storage().reference().child(FireBaseStorageImagesKey).child("\(imageName).png")
@@ -60,22 +64,28 @@ extension LoginController {
             user.setValuesForKeys(values)
             self.messagesController?.setupNavBarWithUser(user: user)
             self.messagesController?.popCurrentMessages()
+            SVProgressHUD.dismiss()
             self.dismiss(animated: true, completion: nil)
+            
         }
     }
 
     func handleLogin() {
+        SVProgressHUD.show(withStatus: "Please wait.. retreiving your data:)")
         guard let email = emailTextField.text, let password = passwordTextField.text else {
             return
         }
         Auth.auth().signIn(withEmail: email, password: password) { (AuthDataResult, error) in
             if error != nil {
+                SVProgressHUD.showError(withStatus: "\(error!.localizedDescription)")
+                SVProgressHUD.dismiss(withDelay: 1.2)
                 return
             }
             if let uid = AuthDataResult?.user.uid {
                 FirebaseHelper.fetchUserWithUid(uid: uid, completionHandler: { (currentUser) in
                     self.messagesController?.setupNavBarWithUser(user: currentUser)
                     self.messagesController?.popCurrentMessages()
+                     SVProgressHUD.dismiss()
                     self.dismiss(animated: true, completion: nil)
                 })
             }

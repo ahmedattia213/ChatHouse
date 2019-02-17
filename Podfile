@@ -11,5 +11,6 @@ target 'ChatHouse' do
   pod 'Firebase/Database'
   pod 'Firebase/Storage'
   pod 'SwiftLint'
+  pod 'SVProgressHUD'
 
 end
