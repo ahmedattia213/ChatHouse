@@ -21,6 +21,7 @@ class FirebaseHelper {
         dbref.observe(DataEventType.value) { (snapshot) in
             let snapshotValue = snapshot.value as? [String: AnyObject] ?? [:]
             currentUser.setValuesForKeys(snapshotValue)
+            currentUser.id = uid
             completionHandler(currentUser)
         }
     }

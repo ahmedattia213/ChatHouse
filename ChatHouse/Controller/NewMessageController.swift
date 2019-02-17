@@ -31,16 +31,17 @@ class NewMessageController: UITableViewController {
 
     func fetchUsers() {
         let usersRef = Database.database().reference().child(FirebaseUsersKey)
-        usersRef.observe(DataEventType.value) { (snapshot) in
+        usersRef.observe(.childAdded) { (snapshot) in
             let snapshotValue = snapshot.value as? [String: AnyObject] ?? [:]
-
-            for snap in snapshotValue {
                 let user = User()
-                user.id = snap.key
-                user.setValuesForKeys(snap.value as! [String: AnyObject])
-                user.email?.caseInsensitiveCompare((Auth.auth().currentUser?.email)!) == ComparisonResult.orderedSame ?  nil : self.users.append(user)
+                user.setValuesForKeys(snapshotValue)
+                user.id = snapshot.key
+            if let currentId = Auth.auth().currentUser?.uid {
+                 user.id!.caseInsensitiveCompare(currentId) == ComparisonResult.orderedSame ?  nil : self.users.append(user)
+            } else {
+               self.users.append(user)
             }
-
+           
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
