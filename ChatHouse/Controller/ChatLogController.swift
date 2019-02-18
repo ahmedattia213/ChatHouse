@@ -152,10 +152,12 @@ class ChatLogController: UICollectionViewController , UICollectionViewDelegateFl
     let sendButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = .white
-        button.setTitle("send", for: .normal)
-        button.setTitleColor(.blue, for: .normal)
+        let img = UIImage(named: "newMessage")?.withRenderingMode(.alwaysOriginal)
+        button.setImage(img, for: .normal)
+        button.imageView?.contentMode = .scaleAspectFill
         button.addTarget(self, action: #selector(handleSendButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.isHidden = true
         return button
     }()
     
@@ -217,6 +219,9 @@ class ChatLogController: UICollectionViewController , UICollectionViewDelegateFl
     }
     
     @objc func handleSendButton() {
+        print("edaas 3lya")
+      
+        
         let fromId = Auth.auth().currentUser?.uid
         let toId = user!.id
         let ref = Database.database().reference().child(FirebaseMessagesKey).childByAutoId()
@@ -239,26 +244,43 @@ class ChatLogController: UICollectionViewController , UICollectionViewDelegateFl
 
 extension ChatLogController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
+       
+        UIView.animate(withDuration: 0.3) {
+            self.containerViewHeightConstraint?.constant = 300
+        }
         if   textView.text == "Enter your message.." && textView.textColor == .lightGray {
             textView.text = ""
             textView.textColor = .black
             textView.font = UIFont.systemFont(ofSize: 14)
-            UIView.animate(withDuration: 0.3) {
-                self.containerViewHeightConstraint?.constant = 300
-            }
-            
         }
+        
+       
         textView.becomeFirstResponder()
+        
+    }
+ 
+    func textViewDidChange(_ textView: UITextView) {
+        let notAllowedtext = CharacterSet.init(charactersIn: " ")
+        let writtenString = textView.text!
+        let writtenText = CharacterSet.init(charactersIn: writtenString)
+        if !(writtenString == "" || notAllowedtext.isSuperset(of: writtenText))  {
+            sendButton.isHidden = false
+                    } else {
+            sendButton.isHidden = true
+        }
+        
     }
     func textViewDidEndEditing(_ textView: UITextView) {
+        UIView.animate(withDuration: 0.3) {
+            self.containerViewHeightConstraint?.constant = 50
+        }
+    
         if textView.text == "" {
             textView.font = UIFont.systemFont(ofSize: 12)
             textView.text = "Enter your message.."
             textView.textColor = .lightGray
-            UIView.animate(withDuration: 0.3) {
-                self.containerViewHeightConstraint?.constant = 50
-            }
         }
+       
         textView.resignFirstResponder()
     }
 }

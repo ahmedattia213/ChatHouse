@@ -11,8 +11,10 @@ import Firebase
 import SVProgressHUD
 
 class MessagesController: UITableViewController {
+    var timer : Timer?
     var myMessages = [Message]()
     var messagesDictionary = [String : Message]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(UserCell.self, forCellReuseIdentifier: UserCell.cellID)
@@ -75,7 +77,8 @@ class MessagesController: UITableViewController {
                         return message1.timestamp!.intValue > message2.timestamp!.intValue
                     })
                     
-                    self.perform(#selector(self.handleReloadTableView), with: nil, afterDelay: 0.5) //fix reloading too much
+                    //fix reloading too much
+                    self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTableView), userInfo: nil, repeats: false)
                 }
                 
                 
@@ -83,9 +86,10 @@ class MessagesController: UITableViewController {
             
         }
     }
+    
     @objc func handleReloadTableView(){
         DispatchQueue.main.async {
-            print("table reloadedd")
+            print("table reloaded finally")
             self.tableView.reloadData()
         }
     }
