@@ -10,8 +10,8 @@ import UIKit
 import Firebase
 
 class NewMessageController: UITableViewController {
-    var messagesController : MessagesController?
-   
+    var messagesController: MessagesController?
+
     var users = [User]()
 
     override func viewDidLoad() {
@@ -41,7 +41,7 @@ class NewMessageController: UITableViewController {
             } else {
                self.users.append(user)
             }
-           
+
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
@@ -69,8 +69,7 @@ class NewMessageController: UITableViewController {
         }
         return cell!
     }
-    
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         dismiss(animated: true) {
             let user = self.users[indexPath.row]
@@ -85,7 +84,5 @@ class NewMessageController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 72
     }
-
-  
 
 }

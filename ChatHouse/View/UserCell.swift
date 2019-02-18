@@ -13,13 +13,13 @@ class UserCell: UITableViewCell {
     static let cellID = "cellid"
 
     var message: Message? {
-        didSet{
+        didSet {
             setupPartnerNameAndProfileImage()
             setupTime()
         }
     }
 
-    private func setupPartnerNameAndProfileImage(){
+    private func setupPartnerNameAndProfileImage() {
         let chatPartnerId = message?.chatPartnerId()
         if let id = chatPartnerId {
             FirebaseHelper.fetchUserWithUid(uid: id) { (user) in
@@ -30,8 +30,8 @@ class UserCell: UITableViewCell {
         }
     }
 
-    private func setupTime(){
-        if let seconds = message?.timestamp?.doubleValue{
+    private func setupTime() {
+        if let seconds = message?.timestamp?.doubleValue {
             let timestampdate = NSDate(timeIntervalSince1970: seconds)
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "HH:mm"
@@ -45,7 +45,7 @@ class UserCell: UITableViewCell {
         detailTextLabel?.frame = CGRect(x: profileImageView.frame.maxX + 10, y: detailTextLabel!.frame.origin.y + 0.5, width: detailTextLabel!.frame.width, height: detailTextLabel!.frame.height)
     }
 
-    let dateLabel : UILabel = {
+    let dateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 12)
@@ -72,7 +72,7 @@ class UserCell: UITableViewCell {
         profileImageView.heightAnchor.constraint(equalToConstant: 48).isActive = true
 
         dateLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10).isActive = true
-        dateLabel.topAnchor.constraint(equalTo: self.topAnchor , constant: 18).isActive = true
+        dateLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 18).isActive = true
         dateLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
         dateLabel.heightAnchor.constraint(equalTo: (textLabel?.heightAnchor)!).isActive = true
     }

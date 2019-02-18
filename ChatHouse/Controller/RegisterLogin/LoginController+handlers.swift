@@ -24,7 +24,7 @@ extension LoginController {
                 SVProgressHUD.dismiss(withDelay: 1.2)
                 return
             }
-           
+
             guard let uid =  user?.user.uid else { return }
             let imageName = NSUUID().uuidString
             let storageRef = Storage.storage().reference().child(FireBaseStorageImagesKey).child("\(imageName).png")
@@ -66,7 +66,7 @@ extension LoginController {
             self.messagesController?.popCurrentMessages()
             SVProgressHUD.dismiss()
             self.dismiss(animated: true, completion: nil)
-            
+
         }
     }
 

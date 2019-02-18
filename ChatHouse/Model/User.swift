@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 class User: NSObject {
    @objc var id: String?
    @objc var email: String?
