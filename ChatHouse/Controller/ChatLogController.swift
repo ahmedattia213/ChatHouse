@@ -17,7 +17,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     var user: User? {
         didSet {
             navigationItem.title = user?.name
-            setupNavBarWithUser(user: user!)
+            setupNavBarWithUser(user!)
             retrieveUserMessages()
         }
         
@@ -25,10 +25,10 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     var messages = [Message]()
     
     func retrieveUserMessages() {
-        guard let uid = Auth.auth().currentUser?.uid else {
+        guard let uid = Auth.auth().currentUser?.uid, let toId = user?.id else {
             return
         }
-        let userMessagesRef = Database.database().reference().child(FirebaseUserMessagesKey).child(uid)
+        let userMessagesRef = Database.database().reference().child(FirebaseUserMessagesKey).child(uid).child(toId)
         userMessagesRef.observe(.childAdded) { (snapshot) in
             let messageId = snapshot.key
             let messageRef = Database.database().reference().child(FirebaseMessagesKey).child(messageId)
@@ -36,9 +36,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
                 let messagesDictionary = snapshot.value as? [String: AnyObject] ?? [:]
                 let message = Message()
                 message.setValuesForKeys(messagesDictionary)
-                if message.chatPartnerId() == self.user?.id {
                     self.messages.append(message)
-                }
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
                 }
@@ -100,7 +98,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         collectionView.collectionViewLayout.invalidateLayout()
     }
-    func setupNavBarWithUser(user: User) { //HOW Dupplication ezay a7elo
+    func setupNavBarWithUser(_ user: User) { //HOW Dupplication ezay a7elo
         let titleView = UIView()
         titleView.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         self.navigationItem.titleView = titleView
@@ -272,10 +270,10 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
                 print(error!)
                 return
             }
-            let userMessagesRef = Database.database().reference().child(FirebaseUserMessagesKey).child(fromId!)
+            let userMessagesRef = Database.database().reference().child(FirebaseUserMessagesKey).child(fromId!).child(toId!)
             let messageId = ref.key
             userMessagesRef.updateChildValues([messageId!: "done"])
-            let receiverMessageRef = Database.database().reference().child(FirebaseUserMessagesKey).child(toId!)
+            let receiverMessageRef = Database.database().reference().child(FirebaseUserMessagesKey).child(toId!).child(fromId!)
             receiverMessageRef.updateChildValues([messageId!: "done"])
         }
         self.chatTextView.text = ""

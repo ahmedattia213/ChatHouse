@@ -22,7 +22,7 @@ class UserCell: UITableViewCell {
     private func setupPartnerNameAndProfileImage() {
         let chatPartnerId = message?.chatPartnerId()
         if let id = chatPartnerId {
-            FirebaseHelper.fetchUserWithUid(uid: id) { (user) in
+            FirebaseHelper.fetchUserWithUid(id) { (user) in
                 self.textLabel?.text = user.name
                 self.profileImageView.retrieveDataFromUrl(urlString: user.profileImageUrl!)
                 self.detailTextLabel?.text = self.message?.message
