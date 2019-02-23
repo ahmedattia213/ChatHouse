@@ -12,7 +12,8 @@ import FirebaseDatabase
 let FirebaseMessagesKey = "messages"
 let FirebaseUserMessagesKey = "userMessages"
 let FirebaseUsersKey = "users"
-let FireBaseStorageImagesKey = "myProfileImages"
+let FirebaseStorageProfileImagesKey = "usersProfileImages"
+let FirebaseStorageMessageImagesKey = "usersMessageImages"
 
 class FirebaseHelper {
     static func fetchUserWithUid(_ uid: String, completionHandler: @escaping (User) -> Void) {

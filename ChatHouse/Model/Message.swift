@@ -11,15 +11,29 @@ import FirebaseAuth
 
 class Message: NSObject {
 
-    @objc var message: String?
+    @objc var text: String?
     @objc var receiverId: String?
     @objc var senderId: String?
     @objc var timestamp: NSNumber?
+    @objc var imageUrl: String?
+    @objc var imageWidth: NSNumber?
+    @objc var imageHeight: NSNumber?
 
+    init(dictionary: [String: AnyObject]){
+        super.init()
+        text = dictionary["text"] as? String
+        receiverId = dictionary["receiverId"] as? String
+        senderId = dictionary["senderId"] as? String
+        timestamp = dictionary["timestamp"] as? NSNumber
+        imageUrl = dictionary["imageUrl"] as? String
+        imageWidth = dictionary["imageWidth"] as? NSNumber
+        imageHeight = dictionary["imageHeight"] as? NSNumber
+    }
     static func == (lhs: Message, rhs: Message) -> Bool {
-        return lhs.message == rhs.message && lhs.receiverId == rhs.receiverId
+        return lhs.text == rhs.text && lhs.receiverId == rhs.receiverId
             && lhs.senderId == rhs.senderId
             && lhs.timestamp == rhs.timestamp
+            && lhs.imageUrl == rhs.imageUrl
     }
 
     func chatPartnerId() -> String? {

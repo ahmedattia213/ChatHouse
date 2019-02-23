@@ -25,7 +25,7 @@ class UserCell: UITableViewCell {
             FirebaseHelper.fetchUserWithUid(id) { (user) in
                 self.textLabel?.text = user.name
                 self.profileImageView.retrieveDataFromUrl(urlString: user.profileImageUrl!)
-                self.detailTextLabel?.text = self.message?.message
+                self.detailTextLabel?.text = self.message?.text
             }
         }
     }

@@ -19,6 +19,7 @@ class ChatMessageCell: UICollectionViewCell {
         textView.font = UIFont.systemFont(ofSize: 16)
         textView.textColor = .white
         textView.backgroundColor = .clear
+        textView.isEditable = false
         return textView
     }()
 
@@ -27,6 +28,15 @@ class ChatMessageCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 15
+        return imageView
+    }()
+    
+    let messageImageView: UIImageView = {
+       let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 15
+        imageView.isHidden = true
         return imageView
     }()
 
@@ -51,6 +61,7 @@ class ChatMessageCell: UICollectionViewCell {
         addSubview(profileImageVIew)
         addSubview(bubbleView)
         addSubview(messageTextView)
+        bubbleView.addSubview(messageImageView)
 
         profileImageVIew.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         profileImageVIew.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8).isActive = true
@@ -65,6 +76,12 @@ class ChatMessageCell: UICollectionViewCell {
         bubbleWidthAnchor = bubbleView.widthAnchor.constraint(equalToConstant: 200)
         bubbleWidthAnchor?.isActive = true
         bubbleView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+        
+        messageImageView.leadingAnchor.constraint(equalTo: bubbleView.leadingAnchor).isActive = true
+        messageImageView.topAnchor.constraint(equalTo: bubbleView.topAnchor).isActive = true
+        messageImageView.widthAnchor.constraint(equalTo: bubbleView.widthAnchor).isActive = true
+        messageImageView.heightAnchor.constraint(equalTo: bubbleView.heightAnchor).isActive = true
+
 
         messageTextView.topAnchor.constraint(equalTo: bubbleView.topAnchor).isActive = true
         messageTextView.leadingAnchor.constraint(equalTo: bubbleView.leadingAnchor, constant: 8 ).isActive = true

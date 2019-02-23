@@ -28,6 +28,10 @@
 	</array>
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleDefault</string>
+	<key>NSCameraUsageDescription</key>
+	<string>ChatHouse requires to access camera for taking profile picture</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>ChatHouse requires to access photo library for taking profile picture</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

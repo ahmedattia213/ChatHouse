@@ -72,8 +72,7 @@ class MessagesController: UITableViewController {
         let messagesRef = Database.database().reference().child(FirebaseMessagesKey).child(messageId)
         messagesRef.observeSingleEvent(of: .value, with: { (messageSnapshot) in
             let messageSnapshotValue = messageSnapshot.value as? [String: AnyObject] ?? [:]
-            let message = Message()
-            message.setValuesForKeys(messageSnapshotValue )
+            let message = Message(dictionary: messageSnapshotValue)
             if let partnerId = message.chatPartnerId() {
                 var newerMessage: Message?
                 if let olderMessage = self.messagesDictionary[partnerId] {
@@ -237,7 +236,7 @@ class MessageCell: UITableViewCell {
 extension Array {
     func printArrayElements() {
         for element in self as! [Message] {
-            print(element.message!)
+            print(element.text!)
         }
         print()
     }
