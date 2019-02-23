@@ -30,7 +30,7 @@ class ChatMessageCell: UICollectionViewCell {
         imageView.layer.cornerRadius = 15
         return imageView
     }()
-    
+
     let messageImageView: UIImageView = {
        let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -76,12 +76,11 @@ class ChatMessageCell: UICollectionViewCell {
         bubbleWidthAnchor = bubbleView.widthAnchor.constraint(equalToConstant: 200)
         bubbleWidthAnchor?.isActive = true
         bubbleView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
-        
+
         messageImageView.leadingAnchor.constraint(equalTo: bubbleView.leadingAnchor).isActive = true
         messageImageView.topAnchor.constraint(equalTo: bubbleView.topAnchor).isActive = true
         messageImageView.widthAnchor.constraint(equalTo: bubbleView.widthAnchor).isActive = true
         messageImageView.heightAnchor.constraint(equalTo: bubbleView.heightAnchor).isActive = true
-
 
         messageTextView.topAnchor.constraint(equalTo: bubbleView.topAnchor).isActive = true
         messageTextView.leadingAnchor.constraint(equalTo: bubbleView.leadingAnchor, constant: 8 ).isActive = true

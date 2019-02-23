@@ -19,7 +19,7 @@ class Message: NSObject {
     @objc var imageWidth: NSNumber?
     @objc var imageHeight: NSNumber?
 
-    init(dictionary: [String: AnyObject]){
+    init(dictionary: [String: AnyObject]) {
         super.init()
         text = dictionary["text"] as? String
         receiverId = dictionary["receiverId"] as? String

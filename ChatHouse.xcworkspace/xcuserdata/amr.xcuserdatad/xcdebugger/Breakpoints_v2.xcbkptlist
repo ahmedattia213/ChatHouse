@@ -106,12 +106,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ChatHouse/Controller/ChatLog/ChatLogController.swift"
-            timestampString = "572581412.947201"
+            timestampString = "572581726.913367"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "297"
-            endingLineNumber = "297"
-            landmarkName = "textViewDidChange(_:)"
+            startingLineNumber = "299"
+            endingLineNumber = "299"
+            landmarkName = "textViewDidEndEditing(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -122,13 +122,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ChatHouse/Controller/ChatLog/ChatLogController.swift"
-            timestampString = "572581412.9477741"
+            timestampString = "572581726.914432"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "299"
-            endingLineNumber = "299"
-            landmarkName = "textViewDidChange(_:)"
-            landmarkType = "7">
+            startingLineNumber = "301"
+            endingLineNumber = "301"
+            landmarkName = "ChatLogController"
+            landmarkType = "21">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
