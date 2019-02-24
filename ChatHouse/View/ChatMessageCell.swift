@@ -12,6 +12,7 @@ class ChatMessageCell: UICollectionViewCell {
 
      static let bubbleViewBlueColor = UIColor(hexRGB: 0x2e8bed)
      static let bubbleViewGrayColor = UIColor(hexRGB: 0xdfdee6)
+     var chatLogController : ChatLogController?
 
     let messageTextView: UITextView = {
         let textView = UITextView()
@@ -31,15 +32,23 @@ class ChatMessageCell: UICollectionViewCell {
         return imageView
     }()
 
-    let messageImageView: UIImageView = {
+    lazy var messageImageView: UIImageView = {
        let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 15
         imageView.isHidden = true
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapToZoom)))
         return imageView
     }()
 
+    @objc func handleTapToZoom(tapGesture: UITapGestureRecognizer){
+        if let imageView = tapGesture.view as? UIImageView {
+            chatLogController?.performZoomInForStartingImageView(imageView)
+        }
+    }
+    
     let bubbleView: UIView = {
        let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false

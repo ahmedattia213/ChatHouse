@@ -10,6 +10,7 @@ import UIKit
 import SVProgressHUD
 
 class LoginController: UIViewController, ImagePickerDelegate {
+    
 
     var messagesController: MessagesController?
     var inputsContainerViewHeightAnchor: NSLayoutConstraint?
@@ -112,8 +113,8 @@ class LoginController: UIViewController, ImagePickerDelegate {
         setupLoginRegisterSegmentedControl()
     }
 
-    func didSelect(image: UIImage?) {
-        self.profileImageView.image = image
+    func didSelect(selectedMedia: AnyObject?) {
+        self.profileImageView.image = selectedMedia as? UIImage
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {

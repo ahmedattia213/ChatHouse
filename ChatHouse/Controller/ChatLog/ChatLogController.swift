@@ -11,7 +11,9 @@ import FirebaseDatabase
 import FirebaseAuth
 
 class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-
+    var startingFrame: CGRect?
+    var blackBackground : UIView?
+    var startingImageView: UIImageView?
     let chatCellId = "chatCellId"
     var containerViewBottomAnchor: NSLayoutConstraint?
     var imagePicker: ImagePicker!
@@ -207,6 +209,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: chatCellId, for: indexPath) as? ChatMessageCell
+        cell?.chatLogController = self
         let message = messages[indexPath.row]
         setupMessageCellWithMessage(cell!, message)
         return cell!
@@ -239,13 +242,13 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
 
         if let text = message.text {
             cell.messageImageView.isHidden = true
-            cell.bubbleWidthAnchor?.constant = estimateFrameForText(text: text).width + 32
             cell.messageTextView.isHidden = false
+            cell.bubbleWidthAnchor?.constant = estimateFrameForText(text: text).width + 32
 
         } else if message.imageUrl != nil {
             cell.messageTextView.isHidden = true
-            cell.bubbleView.backgroundColor = .clear
             cell.messageImageView.isHidden = false
+            cell.bubbleView.backgroundColor = .clear
             cell.messageImageView.retrieveDataFromUrl(urlString: message.imageUrl!)
             cell.bubbleWidthAnchor?.constant = 200
         }
@@ -264,6 +267,46 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
             cellheight = Int((imageHeight.floatValue/imageWidth.floatValue) * 200 )
         }
         return CGSize(width: Int(view.frame.width), height: cellheight)
+    }
+
+    func performZoomInForStartingImageView(_ startingImageView: UIImageView){
+         startingFrame = startingImageView.superview?.convert(startingImageView.frame, to: nil)
+         self.startingImageView = startingImageView
+         self.startingImageView?.isHidden = true
+        let zoomingImageView = UIImageView(frame: startingFrame!)
+        zoomingImageView.image = startingImageView.image
+        zoomingImageView.isUserInteractionEnabled = true
+        zoomingImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(removePictureaAndBackground)))
+         if let keyWindow = UIApplication.shared.keyWindow {
+            blackBackground = UIView(frame: keyWindow.frame)
+            blackBackground?.backgroundColor = .black
+            keyWindow.addSubview(blackBackground!)
+            keyWindow.addSubview(zoomingImageView)
+            
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                self.blackBackground?.alpha = 1
+                self.inputContainerView.alpha = 0
+                let height = keyWindow.frame.width * (self.startingFrame!.height / self.startingFrame!.width)
+                zoomingImageView.frame =  CGRect(x: 0, y: 0 , width: keyWindow.frame.width , height: height)
+                zoomingImageView.center = keyWindow.center
+            }, completion: nil)
+    
+        }
+        
+    }
+    @objc func removePictureaAndBackground(tapGesture: UITapGestureRecognizer ){
+        if let zoomingOutImageView = tapGesture.view as? UIImageView {
+            zoomingOutImageView.clipsToBounds = true
+            zoomingOutImageView.layer.cornerRadius = 15
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                zoomingOutImageView.frame = self.startingFrame!
+                self.blackBackground?.alpha = 0
+                self.inputContainerView.alpha = 1
+            }) { (completed) in
+                self.startingImageView?.isHidden = false
+                zoomingOutImageView.removeFromSuperview()
+            }
+        }
     }
 }
 

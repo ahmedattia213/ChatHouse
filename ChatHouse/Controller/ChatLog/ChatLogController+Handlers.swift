@@ -85,8 +85,13 @@ extension ChatLogController: ImagePickerDelegate {
 
     }
 
-    func didSelect(image: UIImage?) {
-        uploadToFirebaseStorgageWithImage(image: image!)
+    func didSelect(selectedMedia: AnyObject?) {
+        if let image = selectedMedia as? UIImage {
+            uploadToFirebaseStorgageWithImage(image: image)
+        }
+        else {
+            print("VIDEOO")
+        }
     }
 
     private func uploadToFirebaseStorgageWithImage(image: UIImage) {

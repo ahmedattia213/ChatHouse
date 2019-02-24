@@ -6,9 +6,11 @@
 //  Copyright © 2019 Ahmed Amr. All rights reserved.
 //
 import UIKit
+import MobileCoreServices
+import AVFoundation
 
 public protocol ImagePickerDelegate: class {
-    func didSelect(image: UIImage?)
+    func didSelect(selectedMedia: AnyObject?)
 }
 
 open class ImagePicker: NSObject {
@@ -24,7 +26,10 @@ open class ImagePicker: NSObject {
         self.delegate = delegate
         self.pickerController.delegate = self
         self.pickerController.allowsEditing = true
-        self.pickerController.mediaTypes = ["public.image"]
+        self.pickerController.mediaTypes = [kUTTypeImage] as [String]
+        if presentationController.isKind(of: ChatLogController.self) {
+            self.pickerController.mediaTypes.append(kUTTypeMovie as String)
+        }
     }
 
     private func action(for type: UIImagePickerController.SourceType, title: String) -> UIAlertAction? {
@@ -63,10 +68,10 @@ open class ImagePicker: NSObject {
         self.presentationController?.present(alertController, animated: true)
     }
 
-    private func pickerController(_ controller: UIImagePickerController, didSelect image: UIImage?) {
+    private func pickerController(_ controller: UIImagePickerController, didSelect media: AnyObject?) {
         controller.dismiss(animated: true, completion: nil)
 
-        self.delegate?.didSelect(image: image)
+        self.delegate?.didSelect(selectedMedia: media)
     }
 }
 
@@ -79,10 +84,15 @@ extension ImagePicker: UIImagePickerControllerDelegate {
 
     public func imagePickerController(_ picker: UIImagePickerController,
                                       didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        guard let image = info[.editedImage] as? UIImage else {
-            return self.pickerController(picker, didSelect: nil)
+        if let videoUrl = info[.mediaURL] {
+            self.pickerController(picker, didSelect: videoUrl as AnyObject )
+            return
         }
-        self.pickerController(picker, didSelect: image)
+        if let image = info[.editedImage] as? UIImage {
+            self.pickerController(picker, didSelect: image)
+            return
+        }
+        self.pickerController(picker, didSelect: nil)
     }
 }
 
