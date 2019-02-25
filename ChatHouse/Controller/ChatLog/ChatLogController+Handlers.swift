@@ -10,6 +10,8 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
+import SVProgressHUD
+import AVFoundation
 
 extension ChatLogController: ImagePickerDelegate {
 
@@ -61,15 +63,20 @@ extension ChatLogController: ImagePickerDelegate {
        self.imagePicker.present(from: self.view)
     }
        @objc func handleSendButton() {
-        sendMessage(imageUrl: nil, image: nil, textViewMessage: self.chatTextView.text)
+        let properties = ["text": self.chatTextView.text]
+        sendMessageWithProperties(properties as [String : AnyObject])
     }
 
-    private func sendMessage(imageUrl: String?, image: UIImage?, textViewMessage: String?) {
+    private func sendMessageWithProperties(_ properties: [String: AnyObject]) {
         let fromId = Auth.auth().currentUser?.uid
         let toId = user!.id
         let ref = Database.database().reference().child(FirebaseMessagesKey).childByAutoId()
         let timestamp = Int(NSDate().timeIntervalSince1970)
-        let values = imageUrl == nil ? ["text": textViewMessage!, "senderId": fromId!, "receiverId": toId!, "timestamp": timestamp ] : [ "senderId": fromId!, "receiverId": toId!, "timestamp": timestamp, "imageUrl": imageUrl!, "imageWidth": image!.size.width, "imageHeight": image!.size.height ]
+        
+        var values =  ["senderId": fromId!, "receiverId": toId!, "timestamp": timestamp] as [String : AnyObject]
+        // append properties to values
+        properties.forEach({values[$0] = $1})
+        
         self.chatTextView.text = nil
         ref.updateChildValues(values) { (error, reference) in
             if error != nil {
@@ -85,17 +92,61 @@ extension ChatLogController: ImagePickerDelegate {
 
     }
 
-    func didSelect(selectedMedia: AnyObject?) {
+    func didSelect(selectedMedia: Any?) {
         if let image = selectedMedia as? UIImage {
-            uploadToFirebaseStorgageWithImage(image: image)
+            uploadToFirebaseStorgageWithImage(image: image) { (_) in }
         }
-        else {
-            print("VIDEOO")
+        else if let videoUrl = selectedMedia as? URL {
+            handleVideoSelectedWithUrl(videoUrl)
         }
     }
 
-    private func uploadToFirebaseStorgageWithImage(image: UIImage) {
-        let imageId = NSUUID().uuidString
+    private func handleVideoSelectedWithUrl(_ fileUrl: URL){
+        let urlId = UUID().uuidString + ".mov"
+        let storageRef = Storage.storage().reference().child(FirebaseStorageMessageVideosKey).child(urlId)
+        let uploadVideoTask = storageRef.putFile(from: fileUrl, metadata: nil) { (metadata, error) in
+            if error != nil {
+                print(error!)
+                return
+            }
+            storageRef.downloadURL(completion: { (url, error) in
+                if error != nil {
+                    print(error!)
+                    return
+                }
+                if let thumbnailImage = self.thumbnailImageForFileUrl(fileUrl: fileUrl), let videoUrl = url {
+                    self.uploadToFirebaseStorgageWithImage(image: thumbnailImage, completion: { (imageUrl) in
+                        let properties =  ["imageUrl": imageUrl, "imageWidth": thumbnailImage.size.width, "imageHeight": thumbnailImage.size.height ,"videoUrl": videoUrl.absoluteString] as [String: AnyObject]
+                        self.sendMessageWithProperties(properties)
+                    })
+                }
+            })
+        }
+        uploadVideoTask.observe(.progress) { (snapshot) in
+            if let doubleFraction = snapshot.progress?.fractionCompleted {
+                SVProgressHUD.showProgress(Float(doubleFraction), status: "sending \(Int(doubleFraction * 100))%")
+            }
+        }
+        uploadVideoTask.observe(.success) { (snapshot) in
+            SVProgressHUD.showSuccess(withStatus: "Sent")
+            SVProgressHUD.dismiss(withDelay: 0.5)
+        }
+    }
+    
+    private func thumbnailImageForFileUrl(fileUrl: URL) -> UIImage? {
+        let imageAsset = AVAsset(url: fileUrl)
+        let imageGenerator = AVAssetImageGenerator(asset: imageAsset)
+        do {
+            let thumbnailCgImage = try imageGenerator.copyCGImage(at: CMTime(value: 1, timescale: 60), actualTime: nil)
+            return UIImage(cgImage: thumbnailCgImage)
+        } catch let err {
+            print(err)
+        }
+        return nil
+    }
+    
+    private func uploadToFirebaseStorgageWithImage(image: UIImage, completion: @escaping (_ imageUrl: String) -> Void) {
+        let imageId = UUID().uuidString
         let storageRef = Storage.storage().reference().child(FirebaseStorageMessageImagesKey).child("\(imageId).jpg")
         let uploadData = UIImage.jpegData(image)(compressionQuality: 0.2)
         storageRef.putData(uploadData!, metadata: nil) { (_, error) in
@@ -118,7 +169,8 @@ extension ChatLogController: ImagePickerDelegate {
 
         }
     private func sendMessageWithImageUrl(imageUrl: String, image: UIImage) {
-        sendMessage(imageUrl: imageUrl, image: image, textViewMessage: nil)
+        let properties = ["imageUrl": imageUrl, "imageWidth": image.size.width, "imageHeight": image.size.height ] as [String : AnyObject]
+        sendMessageWithProperties(properties)
     }
 
     }

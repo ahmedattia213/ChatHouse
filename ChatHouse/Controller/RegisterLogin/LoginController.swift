@@ -113,7 +113,7 @@ class LoginController: UIViewController, ImagePickerDelegate {
         setupLoginRegisterSegmentedControl()
     }
 
-    func didSelect(selectedMedia: AnyObject?) {
+    func didSelect(selectedMedia: Any?) {
         self.profileImageView.image = selectedMedia as? UIImage
     }
 

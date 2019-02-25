@@ -26,7 +26,7 @@ extension LoginController {
             }
 
             guard let uid =  user?.user.uid else { return }
-            let imageName = NSUUID().uuidString
+            let imageName = UUID().uuidString
             let storageRef = Storage.storage().reference().child(FirebaseStorageProfileImagesKey).child("\(imageName).jpg")
 
             if let profileImage = self.profileImageView.image, let uploadData = UIImage.jpegData(profileImage)(compressionQuality: 0.1) {

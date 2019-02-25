@@ -18,7 +18,8 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     var containerViewBottomAnchor: NSLayoutConstraint?
     var imagePicker: ImagePicker!
     var imagePicked: UIImage?
-
+    var nameLabel = UILabel()
+    
     var user: User? {
         didSet {
             navigationItem.title = user?.name
@@ -63,7 +64,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         profileImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
         profileImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
 
-        let nameLabel = UILabel()
+        
         nameLabel.font = UIFont.systemFont(ofSize: 16)
         nameLabel.text = user.name
         containerView.addSubview(nameLabel)

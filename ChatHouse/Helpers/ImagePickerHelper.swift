@@ -10,7 +10,7 @@ import MobileCoreServices
 import AVFoundation
 
 public protocol ImagePickerDelegate: class {
-    func didSelect(selectedMedia: AnyObject?)
+    func didSelect(selectedMedia: Any?)
 }
 
 open class ImagePicker: NSObject {
@@ -68,7 +68,7 @@ open class ImagePicker: NSObject {
         self.presentationController?.present(alertController, animated: true)
     }
 
-    private func pickerController(_ controller: UIImagePickerController, didSelect media: AnyObject?) {
+    private func pickerController(_ controller: UIImagePickerController, didSelect media: Any?) {
         controller.dismiss(animated: true, completion: nil)
 
         self.delegate?.didSelect(selectedMedia: media)
@@ -84,8 +84,8 @@ extension ImagePicker: UIImagePickerControllerDelegate {
 
     public func imagePickerController(_ picker: UIImagePickerController,
                                       didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        if let videoUrl = info[.mediaURL] {
-            self.pickerController(picker, didSelect: videoUrl as AnyObject )
+        if let videoUrl = info[.mediaURL] as? URL {
+            self.pickerController(picker, didSelect: videoUrl )
             return
         }
         if let image = info[.editedImage] as? UIImage {
