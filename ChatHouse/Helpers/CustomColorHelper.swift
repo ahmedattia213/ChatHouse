@@ -20,7 +20,7 @@ extension UIColor {
 }
 
 extension UIViewController {
-    func hideKeyboard() {
+    func hideKeyboardWhenTappedAround() {
          self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
     }
 

@@ -14,7 +14,6 @@ import SVProgressHUD
 import AVFoundation
 
 extension ChatLogController: ImagePickerDelegate {
-
     func retrieveUserMessages() {
         guard let uid = Auth.auth().currentUser?.uid, let toId = user?.id else {
             return
@@ -30,43 +29,43 @@ extension ChatLogController: ImagePickerDelegate {
                     self.collectionView.reloadData()
                     self.scrollToBottomCollectionView()
                 }
-
+                
             })
-
+            
         }
     }
-
+    
     @objc func dismissKeyboardWhenTappedAround() {
         collectionView.endEditing(true)
         chatTextView.resignFirstResponder()
     }
-
+    
     @objc func keyboardWillShow(_ notification: Notification) {
         let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
         let keyboardHeight = keyboardFrame!.height
-
+        
         let keyboardAnimationDuration = (notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue
         self.containerViewBottomAnchor?.constant = -keyboardHeight
         UIView.animate(withDuration: keyboardAnimationDuration!) {
             self.view.layoutIfNeeded()
         }
     }
-        @objc func keyboardWillHide(_ notification: Notification) {
-            let keyboardAnimationDuration = (notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue
-            containerViewBottomAnchor?.constant = 0
-            UIView.animate(withDuration: keyboardAnimationDuration!) {
-                self.view.layoutIfNeeded()
-            }
+    @objc func keyboardWillHide(_ notification: Notification) {
+        let keyboardAnimationDuration = (notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue
+        containerViewBottomAnchor?.constant = 0
+        UIView.animate(withDuration: keyboardAnimationDuration!) {
+            self.view.layoutIfNeeded()
         }
-
-    @objc func handleSendImageButton() {
-       self.imagePicker.present(from: self.view)
     }
-       @objc func handleSendButton() {
+    
+    @objc func handleSendImageButton() {
+        self.imagePicker.present(from: self.view)
+    }
+    @objc func handleSendButton() {
         let properties = ["text": self.chatTextView.text]
         sendMessageWithProperties(properties as [String : AnyObject])
     }
-
+    
     private func sendMessageWithProperties(_ properties: [String: AnyObject]) {
         let fromId = Auth.auth().currentUser?.uid
         let toId = user!.id
@@ -89,9 +88,9 @@ extension ChatLogController: ImagePickerDelegate {
             let receiverMessageRef = Database.database().reference().child(FirebaseUserMessagesKey).child(toId!).child(fromId!)
             receiverMessageRef.updateChildValues([messageId!: "done"])
         }
-
+        
     }
-
+    
     func didSelect(selectedMedia: Any?) {
         if let image = selectedMedia as? UIImage {
             uploadToFirebaseStorgageWithImage(image: image) { (url) in
@@ -102,7 +101,7 @@ extension ChatLogController: ImagePickerDelegate {
             handleVideoSelectedWithUrl(videoUrl)
         }
     }
-
+    
     private func handleVideoSelectedWithUrl(_ fileUrl: URL){
         let urlId = UUID().uuidString + ".mov"
         let storageRef = Storage.storage().reference().child(FirebaseStorageMessageVideosKey).child(urlId)
@@ -156,7 +155,7 @@ extension ChatLogController: ImagePickerDelegate {
                 print(error!)
                 return
             }
-               storageRef.downloadURL(completion: { (url, error) in
+            storageRef.downloadURL(completion: { (url, error) in
                 if error != nil {
                     print(error!)
                     return
@@ -164,15 +163,30 @@ extension ChatLogController: ImagePickerDelegate {
                 if let imageUrl = url?.absoluteString {
                     completion(imageUrl)
                 }
-
+                
             })
-
-            }
-
         }
+        
+    }
+    
     private func sendMessageWithImageUrl(imageUrl: String, image: UIImage) {
         let properties = ["imageUrl": imageUrl, "imageWidth": image.size.width, "imageHeight": image.size.height ] as [String : AnyObject]
         sendMessageWithProperties(properties)
     }
-
+    
+    @objc func removePictureaAndBackground(tapGesture: UITapGestureRecognizer ){
+        if let zoomingOutImageView = tapGesture.view as? UIImageView {
+            zoomingOutImageView.clipsToBounds = true
+            zoomingOutImageView.layer.cornerRadius = 15
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                zoomingOutImageView.frame = self.startingFrame!
+                self.blackBackground?.alpha = 0
+                self.inputContainerView.alpha = 1
+            }) { (completed) in
+                self.startingImageView?.isHidden = false
+                zoomingOutImageView.removeFromSuperview()
+            }
+        }
     }
+    
+}

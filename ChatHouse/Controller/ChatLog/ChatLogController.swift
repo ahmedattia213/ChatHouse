@@ -133,12 +133,11 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         collectionView.addGestureRecognizer(tap)
         collectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         collectionView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        self.hideKeyboard()
+        self.hideKeyboardWhenTappedAround()
         collectionView.register(ChatMessageCell.self, forCellWithReuseIdentifier: chatCellId)
         collectionView.backgroundColor = .white
         collectionView.keyboardDismissMode = .interactive
         setupKeyboardObservers()
-
     }
 
     lazy var inputContainerView: UIView = {
@@ -300,20 +299,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         }
         
     }
-    @objc func removePictureaAndBackground(tapGesture: UITapGestureRecognizer ){
-        if let zoomingOutImageView = tapGesture.view as? UIImageView {
-            zoomingOutImageView.clipsToBounds = true
-            zoomingOutImageView.layer.cornerRadius = 15
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-                zoomingOutImageView.frame = self.startingFrame!
-                self.blackBackground?.alpha = 0
-                self.inputContainerView.alpha = 1
-            }) { (completed) in
-                self.startingImageView?.isHidden = false
-                zoomingOutImageView.removeFromSuperview()
-            }
-        }
-    }
+    
 }
 
 extension ChatLogController: UITextViewDelegate {

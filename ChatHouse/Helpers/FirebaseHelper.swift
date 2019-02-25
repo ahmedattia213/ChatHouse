@@ -16,7 +16,6 @@ let FirebaseStorageProfileImagesKey = "usersProfileImages"
 let FirebaseStorageMessageImagesKey = "usersMessageImages"
 let FirebaseStorageMessageVideosKey = "usersMessageVideos"
 
-
 class FirebaseHelper {
     static func fetchUserWithUid(_ uid: String, completionHandler: @escaping (User) -> Void) {
         let currentUser = User()
