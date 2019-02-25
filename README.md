@@ -1,4 +1,4 @@
-## Chathouse (in progress!)
+## Chathouse
 Now thats a more advanced chatting application,Unlike chatbuzz (https://github.com/ahmedattia213/ChatBuzz),
 Here you have a chatlog for each user instead of only a chatroom for all users,
 you can also register with pictures, send messages, send pictures, send videos.
