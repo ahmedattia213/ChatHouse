@@ -37,7 +37,8 @@ class LoginController: UIViewController, ImagePickerDelegate {
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         return button
     }()
-
+   
+    
     let nameTextField: UITextField = {
         let textfield = UITextField()
         textfield.placeholder = "Enter your name"

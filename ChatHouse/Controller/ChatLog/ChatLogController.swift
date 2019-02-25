@@ -193,12 +193,13 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        NotificationCenter.default.removeObserver(self )
+        NotificationCenter.default.removeObserver( self )
     }
 
     func setupKeyboardObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    
     }
 
      func scrollToBottomCollectionView() {
@@ -212,6 +213,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: chatCellId, for: indexPath) as? ChatMessageCell
         cell?.chatLogController = self
         let message = messages[indexPath.row]
+        cell?.message = message
         setupMessageCellWithMessage(cell!, message)
         return cell!
     }
@@ -242,16 +244,19 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         }
 
         if let text = message.text {
+            cell.playButton.isHidden = true
             cell.messageImageView.isHidden = true
             cell.messageTextView.isHidden = false
             cell.bubbleWidthAnchor?.constant = estimateFrameForText(text: text).width + 32
 
         } else if message.imageUrl != nil {
+            cell.playButton.isHidden = true
             cell.messageTextView.isHidden = true
             cell.messageImageView.isHidden = false
             cell.bubbleView.backgroundColor = .clear
             cell.messageImageView.retrieveDataFromUrl(urlString: message.imageUrl!)
             cell.bubbleWidthAnchor?.constant = 200
+            cell.playButton.isHidden = message.videoUrl == nil
         }
 
     }

@@ -18,6 +18,7 @@ class Message: NSObject {
     @objc var imageUrl: String?
     @objc var imageWidth: NSNumber?
     @objc var imageHeight: NSNumber?
+    @objc var videoUrl: String?
 
     init(dictionary: [String: AnyObject]) {
         super.init()
@@ -28,19 +29,21 @@ class Message: NSObject {
         imageUrl = dictionary["imageUrl"] as? String
         imageWidth = dictionary["imageWidth"] as? NSNumber
         imageHeight = dictionary["imageHeight"] as? NSNumber
+        videoUrl = dictionary["videoUrl"] as? String
     }
     static func == (lhs: Message, rhs: Message) -> Bool {
         return lhs.text == rhs.text && lhs.receiverId == rhs.receiverId
             && lhs.senderId == rhs.senderId
             && lhs.timestamp == rhs.timestamp
             && lhs.imageUrl == rhs.imageUrl
+            && lhs.imageWidth == rhs.imageWidth
+            && lhs.imageHeight == rhs.imageHeight
+            && lhs.videoUrl == rhs.videoUrl
     }
-
     func chatPartnerId() -> String? {
        return  receiverId == Auth.auth().currentUser?.uid ? senderId : receiverId
     }
 }
-
 struct DictionaryKey: Hashable {
     var receiverId: String
     var senderId: String

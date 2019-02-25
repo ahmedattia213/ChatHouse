@@ -94,7 +94,9 @@ extension ChatLogController: ImagePickerDelegate {
 
     func didSelect(selectedMedia: Any?) {
         if let image = selectedMedia as? UIImage {
-            uploadToFirebaseStorgageWithImage(image: image) { (_) in }
+            uploadToFirebaseStorgageWithImage(image: image) { (url) in
+                self.sendMessageWithImageUrl(imageUrl: url, image: image)
+            }
         }
         else if let videoUrl = selectedMedia as? URL {
             handleVideoSelectedWithUrl(videoUrl)
@@ -160,7 +162,7 @@ extension ChatLogController: ImagePickerDelegate {
                     return
                 }
                 if let imageUrl = url?.absoluteString {
-                    self.sendMessageWithImageUrl(imageUrl: imageUrl, image: image)
+                    completion(imageUrl)
                 }
 
             })
