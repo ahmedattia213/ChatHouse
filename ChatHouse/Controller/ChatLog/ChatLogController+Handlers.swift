@@ -40,24 +40,6 @@ extension ChatLogController: ImagePickerDelegate {
         chatTextView.resignFirstResponder()
     }
     
-    @objc func keyboardWillShow(_ notification: Notification) {
-        let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
-        let keyboardHeight = keyboardFrame!.height
-        
-        let keyboardAnimationDuration = (notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue
-        self.containerViewBottomAnchor?.constant = -keyboardHeight
-        UIView.animate(withDuration: keyboardAnimationDuration!) {
-            self.view.layoutIfNeeded()
-        }
-    }
-    @objc func keyboardWillHide(_ notification: Notification) {
-        let keyboardAnimationDuration = (notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue
-        containerViewBottomAnchor?.constant = 0
-        UIView.animate(withDuration: keyboardAnimationDuration!) {
-            self.view.layoutIfNeeded()
-        }
-    }
-    
     @objc func handleSendImageButton() {
         self.imagePicker.present(from: self.view)
     }
@@ -73,7 +55,6 @@ extension ChatLogController: ImagePickerDelegate {
         let timestamp = Int(NSDate().timeIntervalSince1970)
         
         var values =  ["senderId": fromId!, "receiverId": toId!, "timestamp": timestamp] as [String : AnyObject]
-        // append properties to values
         properties.forEach({values[$0] = $1})
         
         self.chatTextView.text = nil

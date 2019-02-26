@@ -137,7 +137,6 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         collectionView.register(ChatMessageCell.self, forCellWithReuseIdentifier: chatCellId)
         collectionView.backgroundColor = .white
         collectionView.keyboardDismissMode = .interactive
-        setupKeyboardObservers()
     }
 
     lazy var inputContainerView: UIView = {
@@ -190,16 +189,6 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         return true
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        NotificationCenter.default.removeObserver( self )
-    }
-
-    func setupKeyboardObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-    
-    }
 
      func scrollToBottomCollectionView() {
         if messages.count > 0 {
