@@ -14,7 +14,7 @@ import SVProgressHUD
 import AVFoundation
 
 extension ChatLogController: ImagePickerDelegate {
-    func retrieveUserMessages() {
+    func retrieveMessages() {
         guard let uid = Auth.auth().currentUser?.uid, let toId = user?.id else {
             return
         }

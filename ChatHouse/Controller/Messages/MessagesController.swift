@@ -22,9 +22,33 @@ class MessagesController: UITableViewController {
         
         let img = UIImage(named: "newMessage")?.withRenderingMode(.alwaysOriginal)
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: img, style: .plain, target: self, action: #selector(handleNewMessage))
+        
+        tableView.allowsMultipleSelectionDuringEditing = true
+    }
+   
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        let message = self.myMessages[indexPath.row]
+        if let chatPartnerId = message.chatPartnerId() {
+            Database.database().reference().child(FirebaseUserMessagesKey).child(uid).child(chatPartnerId).removeValue { (error, _) in
+                if error != nil {
+                    print(error!)
+                    return
+                }
+                self.messagesDictionary.removeValue(forKey: chatPartnerId)
+                self.reloadTableViewWithTimer()
+            }
+        }
+        
+        
     }
     
-    
+  
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return myMessages.count
     }
@@ -50,7 +74,7 @@ class MessagesController: UITableViewController {
         
     }
     
-     func reloadTableViewWithTimer() {
+    func reloadTableViewWithTimer() {
         self.timer?.invalidate()
         self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTableView), userInfo: nil, repeats: false)
     }
@@ -58,7 +82,6 @@ class MessagesController: UITableViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         checkIfUserLoggedIn()
-        retrieveUserMessages()
     }
     
     
@@ -78,6 +101,7 @@ class MessagesController: UITableViewController {
     }
     
     func setupNavBarWithUser(_ user: User) {
+        retrieveUserMessages()
         let titleView = UIView()
         titleView.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         self.navigationItem.titleView = titleView

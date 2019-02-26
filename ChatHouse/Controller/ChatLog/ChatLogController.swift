@@ -24,7 +24,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         didSet {
             navigationItem.title = user?.name
             setupNavBarWithUser(user!)
-            retrieveUserMessages()
+            retrieveMessages()
         }
 
     }

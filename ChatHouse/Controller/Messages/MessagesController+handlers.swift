@@ -12,6 +12,10 @@ import SVProgressHUD
 
 extension MessagesController {
     @objc func handleReloadTableView() {
+        self.myMessages = Array(self.messagesDictionary.values)
+        self.myMessages.sort(by: { (message1, message2) -> Bool in
+            return message1.timestamp!.intValue > message2.timestamp!.intValue
+        })
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
@@ -60,6 +64,10 @@ extension MessagesController {
                 self.fetchMessagesWithMessageId(messageId)
             })
         }
+        ref.observe(.childRemoved) { (snapshot) in
+            self.messagesDictionary.removeValue(forKey: snapshot.key)
+            self.reloadTableViewWithTimer()
+        }
     }
     func checkIfUserLoggedIn() {
         if Auth.auth().currentUser?.uid == nil {
@@ -77,14 +85,9 @@ extension MessagesController {
             if let partnerId = message.chatPartnerId() {
                 var newerMessage: Message?
                 if let olderMessage = self.messagesDictionary[partnerId] {
-                    newerMessage = message.timestamp!.intValue > olderMessage.timestamp!.intValue ? message : olderMessage
+                    newerMessage = message.timestamp!.int32Value > olderMessage.timestamp!.int32Value ? message : olderMessage
                 }
                 self.messagesDictionary[partnerId] = newerMessage ?? message
-                self.myMessages = Array(self.messagesDictionary.values)
-                self.myMessages.sort(by: { (message1, message2) -> Bool in
-                    return message1.timestamp!.intValue > message2.timestamp!.intValue
-                })
-                
                 //fix reloading too much
                 self.reloadTableViewWithTimer()
                 
