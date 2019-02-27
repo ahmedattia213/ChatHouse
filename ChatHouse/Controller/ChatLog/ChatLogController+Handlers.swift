@@ -37,15 +37,16 @@ extension ChatLogController: ImagePickerDelegate {
     
     @objc func dismissKeyboardWhenTappedAround() {
         collectionView.endEditing(true)
-        chatTextView.resignFirstResponder()
+        inputContainerView.chatTextView.resignFirstResponder()
     }
     
     @objc func handleSendImageButton() {
         self.imagePicker.present(from: self.view)
     }
     @objc func handleSendButton() {
-        let properties = ["text": self.chatTextView.text]
+        let properties = ["text": inputContainerView.chatTextView.text]
         sendMessageWithProperties(properties as [String : AnyObject])
+        inputContainerView.sendButton.isHidden = true
     }
     
     private func sendMessageWithProperties(_ properties: [String: AnyObject]) {
@@ -57,7 +58,7 @@ extension ChatLogController: ImagePickerDelegate {
         var values =  ["senderId": fromId!, "receiverId": toId!, "timestamp": timestamp] as [String : AnyObject]
         properties.forEach({values[$0] = $1})
         
-        self.chatTextView.text = nil
+        inputContainerView.chatTextView.text = nil
         ref.updateChildValues(values) { (error, reference) in
             if error != nil {
                 print(error!)

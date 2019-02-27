@@ -80,51 +80,6 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
 
     }
 
-    let sendButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.backgroundColor = .white
-        let img = UIImage(named: "sendMessage3")?.withRenderingMode(.alwaysOriginal)
-        button.setImage(img, for: .normal)
-        button.imageView?.contentMode = .scaleAspectFill
-        button.addTarget(self, action: #selector(handleSendButton), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.isHidden = true
-        return button
-    }()
-
-    let sendImageButton: UIButton = {
-       let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        let img = UIImage(named: "sendImage")?.withRenderingMode(.alwaysOriginal)
-        button.setImage(img, for: .normal)
-        button.imageView?.contentMode = .scaleToFill
-        button.addTarget(self, action: #selector(handleSendImageButton), for: .touchUpInside)
-        return button
-    }()
-
-    lazy var chatTextView: UITextView = {
-        let textview = UITextView()
-        textview.text = "Enter your message.."
-        textview.textColor = .lightGray
-        textview.font = UIFont.systemFont(ofSize: 12)
-        textview.translatesAutoresizingMaskIntoConstraints = false
-        textview.delegate = self
-        return textview
-    }()
-    let separatorLineView: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor(hexRGB: 0xDCDCDC)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-
-    let textViewAndImageLineSeparator: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor(hexRGB: 0xDCDCDC)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         imagePicker = ImagePicker(presentationController: self, delegate: self)
@@ -139,43 +94,9 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         collectionView.keyboardDismissMode = .interactive
     }
 
-    lazy var inputContainerView: UIView = {
-        let containerView = UIView()
-        containerView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50)
-        containerView.backgroundColor = .white
-        containerView.addSubview(sendButton)
-        containerView.addSubview(chatTextView)
-        containerView.addSubview(separatorLineView)
-        containerView.addSubview(sendImageButton)
-        containerView.addSubview(textViewAndImageLineSeparator)
-
-        //sendImageButton: x,y,width,height
-        sendImageButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-        sendImageButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-        sendImageButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        sendImageButton.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
-
-        //sendButton: x,y,width,height
-        sendButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-        sendButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-        sendButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        sendButton.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
-
-        //chatTextView : x,y,width,height
-        chatTextView.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -8).isActive = true
-        chatTextView.leadingAnchor.constraint(equalTo: textViewAndImageLineSeparator.trailingAnchor, constant: 3).isActive = true
-        chatTextView.topAnchor.constraint(equalTo: separatorLineView.topAnchor).isActive = true
-        chatTextView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
-        //separatorLineView: x,y,width,height
-        separatorLineView.widthAnchor.constraint(equalTo: containerView.widthAnchor).isActive = true
-        separatorLineView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        separatorLineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
-
-        //separatorLineView: x,y,width,height
-        textViewAndImageLineSeparator.heightAnchor.constraint(equalTo: containerView.heightAnchor).isActive = true
-        textViewAndImageLineSeparator.widthAnchor.constraint(equalToConstant: 1).isActive = true
-        textViewAndImageLineSeparator.leadingAnchor.constraint(equalTo: sendImageButton.trailingAnchor).isActive = true
-
+    lazy var inputContainerView: ChatInputContainerView = {
+        let containerView = ChatInputContainerView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50))
+        containerView.chatLogController = self
         return containerView
 
     }()
@@ -291,35 +212,3 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     
 }
 
-extension ChatLogController: UITextViewDelegate {
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        scrollToBottomCollectionView()
-        if  textView.text == "Enter your message.." && textView.textColor == .lightGray {
-            textView.text = ""
-            textView.textColor = .black
-            textView.font = UIFont.systemFont(ofSize: 14)
-        }
-        textView.becomeFirstResponder()
-    }
-
-    func textViewDidChange(_ textView: UITextView) {
-        let notAllowedtext = CharacterSet.init(charactersIn: " ")
-        let writtenString = textView.text!
-        let writtenText = CharacterSet.init(charactersIn: writtenString)
-        if !(writtenString == "Enter your message.." || writtenString == "" || notAllowedtext.isSuperset(of: writtenText)) {
-            sendButton.isHidden = false
-        } else {
-            sendButton.isHidden = true
-            textView.text = ""
-            textView.textColor = .black
-            textView.font = UIFont.systemFont(ofSize: 14)
-        }
-
-    }
-    func textViewDidEndEditing(_ textView: UITextView) {
-        textView.font = UIFont.systemFont(ofSize: 12)
-        textView.text = "Enter your message.."
-        textView.textColor = .lightGray
-        textView.resignFirstResponder()
-    }
-}
