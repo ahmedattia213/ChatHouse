@@ -51,7 +51,7 @@ extension MessagesController {
         messagesDictionary.removeAll()
         tableView.reloadData()
     }
-    
+
     func retrieveUserMessages() {
         guard let uid = Auth.auth().currentUser?.uid else {
             return
@@ -74,7 +74,7 @@ extension MessagesController {
             perform(#selector(handleLogout), with: nil, afterDelay: 0)
         } else {
             setupNavBarTitle()
-            
+
         }
     }
     private func fetchMessagesWithMessageId(_ messageId: String) {
@@ -90,9 +90,9 @@ extension MessagesController {
                 self.messagesDictionary[partnerId] = newerMessage ?? message
                 //fix reloading too much
                 self.reloadTableViewWithTimer()
-                
+
             }
-            
+
         })
     }
 }

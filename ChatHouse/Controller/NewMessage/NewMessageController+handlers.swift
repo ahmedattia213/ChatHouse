@@ -10,15 +10,15 @@ import UIKit
 import Firebase
 
 extension NewMessageController {
-    
+
     @objc func handleImageClicking() {
         print("image clicked")
     }
-    
+
     @objc func handleCancel() {
         self.dismiss(animated: true, completion: nil)
     }
-    
+
     func fetchUsers() {
         let usersRef = Database.database().reference().child(FirebaseUsersKey)
         usersRef.observe(.childAdded) { (snapshot) in
@@ -31,7 +31,7 @@ extension NewMessageController {
             } else {
                 self.users.append(user)
             }
-            
+
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }

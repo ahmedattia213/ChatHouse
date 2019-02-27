@@ -26,7 +26,7 @@ open class ImagePicker: NSObject {
         self.delegate = delegate
         self.pickerController.delegate = self
         self.pickerController.allowsEditing = true
-        self.pickerController.mediaTypes = [kUTTypeImage , kUTTypeMovie ] as [String]
+        self.pickerController.mediaTypes = [kUTTypeImage, kUTTypeMovie ] as [String]
         if presentationController.isKind(of: LoginController.self) {
           _ = self.pickerController.mediaTypes.popLast()
         }

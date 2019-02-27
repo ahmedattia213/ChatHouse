@@ -12,14 +12,14 @@ import FirebaseAuth
 
 class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     var startingFrame: CGRect?
-    var blackBackground : UIView?
+    var blackBackground: UIView?
     var startingImageView: UIImageView?
     let chatCellId = "chatCellId"
     var containerViewBottomAnchor: NSLayoutConstraint?
     var imagePicker: ImagePicker!
     var imagePicked: UIImage?
     var nameLabel = UILabel()
-    
+
     var user: User? {
         didSet {
             navigationItem.title = user?.name
@@ -64,7 +64,6 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         profileImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
         profileImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
 
-        
         nameLabel.font = UIFont.systemFont(ofSize: 16)
         nameLabel.text = user.name
         containerView.addSubview(nameLabel)
@@ -109,7 +108,6 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     override var canBecomeFirstResponder: Bool {
         return true
     }
-
 
      func scrollToBottomCollectionView() {
         if messages.count > 0 {
@@ -184,7 +182,7 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         return CGSize(width: Int(view.frame.width), height: cellheight)
     }
 
-    func performZoomInForStartingImageView(_ startingImageView: UIImageView){
+    func performZoomInForStartingImageView(_ startingImageView: UIImageView) {
          startingFrame = startingImageView.superview?.convert(startingImageView.frame, to: nil)
          self.startingImageView = startingImageView
          self.startingImageView?.isHidden = true
@@ -197,18 +195,17 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
             blackBackground?.backgroundColor = .black
             keyWindow.addSubview(blackBackground!)
             keyWindow.addSubview(zoomingImageView)
-            
+
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 self.blackBackground?.alpha = 1
                 self.inputContainerView.alpha = 0
                 let height = keyWindow.frame.width * (self.startingFrame!.height / self.startingFrame!.width)
-                zoomingImageView.frame =  CGRect(x: 0, y: 0 , width: keyWindow.frame.width , height: height)
+                zoomingImageView.frame =  CGRect(x: 0, y: 0, width: keyWindow.frame.width, height: height)
                 zoomingImageView.center = keyWindow.center
             }, completion: nil)
-    
-        }
-        
-    }
-    
-}
 
+        }
+
+    }
+
+}
