@@ -44,6 +44,7 @@ extension MessagesController {
         let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout())
         chatLogController.user = user
         navigationController?.pushViewController(chatLogController, animated: true)
+      
     }
 
     func popCurrentMessages() {

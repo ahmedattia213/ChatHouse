@@ -126,6 +126,7 @@ class MessagesController: UITableViewController {
         containerView.addSubview(nameLabel)
 
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         nameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 8).isActive = true
         nameLabel.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
         nameLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
@@ -139,6 +140,7 @@ class MessagesController: UITableViewController {
 }
 
 class MessageCell: UITableViewCell {
+
     let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -152,8 +154,8 @@ class MessageCell: UITableViewCell {
         super.layoutSubviews()
         textLabel?.frame = CGRect(x: profileImageView.frame.maxX + 8, y: textLabel!.frame.origin.y, width: textLabel!.frame.width, height: textLabel!.frame.height)
         detailTextLabel?.frame = CGRect(x: profileImageView.frame.maxX + 8, y: detailTextLabel!.frame.origin.y, width: detailTextLabel!.frame.width, height: detailTextLabel!.frame.height)
-
     }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
         addSubview(profileImageView)
